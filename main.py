@@ -1,13 +1,5 @@
-print("Initial Commit")
-print("second Commit")
-print("third Commit")
-print("fourth Commit")
-print("fuck")
-print("fuck!")
-print("fuck2!")
-print("fuck321")
-print("fuck3!")
-print("fuck8798")
-print('FranklinFuck2002')
-print('Wooowww')
-print("bite")
+from CVRPTW_info import CVRPTWInfo
+
+
+info = CVRPTWInfo('instances/R101.25.txt')
+info.print_distance_matrix()
