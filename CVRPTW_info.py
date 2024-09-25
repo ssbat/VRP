@@ -14,7 +14,7 @@ class CVRPTWInfo :
         self.service_times : list[int] = []
         self.read_instance_file()
         self.construct_distance_matrix()
-
+        pass
     
 
 

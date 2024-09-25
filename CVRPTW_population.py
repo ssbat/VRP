@@ -12,3 +12,8 @@ class Population:
     
     def create_initial_population(self):
         pass
+
+    def sort():
+        # [c1:204 valid,c2:200 non valide,c3:210 valide,c4: 230: non valid]
+        # return [c1,c3,c3,c4]
+        pass
