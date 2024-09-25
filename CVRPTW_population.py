@@ -7,10 +7,12 @@ class Population:
         self.nb_generation=nb_generation
         self.info = info
         self.chromosomes:list[Chromosome]=[]
+        self.create_initial_population()
 
         pass
     
     def create_initial_population(self):
+        self.chromosomes=[self.info.make_random_paths() for _ in range(800)]
         pass
 
     def sort():
