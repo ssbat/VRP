@@ -14,7 +14,7 @@ class CVRPTWInfo :
         self.service_times : list[int] = []
         self.read_instance_file()
         self.construct_distance_matrix()
-
+        pass
     
 
 
@@ -51,3 +51,12 @@ class CVRPTWInfo :
             print()
             print()
 
+
+    def make_random_paths(self) ->list[list[int]]:
+        """
+        make_random_paths create a random solution that can be valid or not 
+
+        :return: List of pathes that every vehicule will make
+        """
+        # return [[0,1,2,3,4,0],[0,9,8,7,0],...]
+        pass
