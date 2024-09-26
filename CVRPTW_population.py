@@ -23,6 +23,6 @@ class Population:
                 chromosomeInvalid.append(i)
             else:
                 chromosomeValid.append(i)
-        chromosomeInvalid.sort(key = lambda chromosome: chromosome.fitness, reverse=True)
-        chromosomeValid.sort(key = lambda chromosome: chromosome.fitness, reverse=True)
+        chromosomeInvalid.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
+        chromosomeValid.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
         return chromosomeValid + chromosomeInvalid
