@@ -8,14 +8,21 @@ class Population:
         self.info = info
         self.chromosomes:list[Chromosome]=[]
         self.create_initial_population()
+        self.chromosomes = self.sort()
 
         pass
     
     def create_initial_population(self):
-        self.chromosomes=[self.info.make_random_paths() for _ in range(800)]
-        pass
+        self.chromosomes=[Chromosome(self.info, self.info.make_random_paths()) for _ in range(800)]
 
-    def sort():
-        # [c1:204 valid,c2:200 non valide,c3:210 valide,c4: 230: non valid]
-        # return [c1,c3,c3,c4]
-        pass
+    def sort(self):
+        chromosomeValid, chromosomeInvalid = [], []
+        for i in self.chromosomes:
+            i.calculFitness()
+            if i.is_valid == False:
+                chromosomeInvalid.append(i)
+            else:
+                chromosomeValid.append(i)
+        chromosomeInvalid.sort(key = lambda chromosome: chromosome.fitness, reverse=True)
+        chromosomeValid.sort(key = lambda chromosome: chromosome.fitness, reverse=True)
+        return chromosomeValid + chromosomeInvalid
