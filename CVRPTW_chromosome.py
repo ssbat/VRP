@@ -26,9 +26,30 @@ class Chromosome(object):
     def croisement(self):
         pass
     
+    # Je ne suis pas sur pour l'id s'il le faut ou pas ou si on peut récupérer la route du camion autrement
+    def isValid(self, id):
 
-    def isValid(self):
-        pass
+        # truck = [1,5,6,7,8,1] par exemple
+        truck = self.routes[id]
+        time = 0
+        capacity = self.info.capacity
+
+        for city in range(len(truck) - 1):
+            city_travelled = truck[city]
+            next_city = truck[city + 1]
+
+            time += self.info.distances[city_travelled][next_city]
+
+            if not (self.info.ready_times[next_city] <= time <= self.info.due_dates[next_city]):
+                return False
+            
+            if capacity < self.info.demand[next_city]:
+                return False
+            
+            time += self.info.service_times[next_city]
+            capacity -= self.info.demand[next_city]
+        
+        return True
 
     # Extra
     def chromosome_correction(self):
@@ -36,5 +57,4 @@ class Chromosome(object):
 
     def mutation(self):
         pass
-    
 
