@@ -1,5 +1,7 @@
 
 import math
+from random import randint
+
 class CVRPTWInfo :
     def __init__(self,instance_fileName: str) -> None:
         self.filename: str = instance_fileName
@@ -21,8 +23,9 @@ class CVRPTWInfo :
     def read_instance_file(self):
         with open(self.filename) as f:
             file_lines= f.readlines()
-            self.clients_number = int(file_lines[4].split()[0])
+            self.vehicules_number = int(file_lines[4].split()[0])
             self.capacity = int(file_lines[4].split()[1])
+            self.clients_number = len(file_lines) - 11
             self.coords=[(-1,-1) for i in range(self.clients_number +1)]
             # data starts from the line 9
             for (index, line) in enumerate(file_lines[9 : 9+self.clients_number +1]):
@@ -44,6 +47,7 @@ class CVRPTWInfo :
             for to_site in range(self.clients_number + 1):
                 distance_from_site.append(self.compute_euclidean_distance(self.coords[site],self.coords[to_site]))
             self.distances.append(distance_from_site)
+
     def print_distance_matrix(self):
         for i in range(len(self.distances)):
             for j in range(len(self.distances[i])):
@@ -53,10 +57,15 @@ class CVRPTWInfo :
 
 
     def make_random_paths(self) ->list[list[int]]:
-        """
-        make_random_paths create a random solution that can be valid or not 
-
-        :return: List of pathes that every vehicule will make
-        """
         # return [[0,1,2,3,4,0],[0,9,8,7,0],...]
-        pass
+        routes = []
+
+        for i in range(self.vehicules_number):
+            routes.append([0])
+
+        for i in range(1,self.clients_number + 1):
+            picked_truck = randint(0, self.vehicules_number - 1)
+            routes[picked_truck].append(i)
+
+        for r in routes:
+            r.append(0)
