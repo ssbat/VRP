@@ -1,7 +1,6 @@
 
 import math
-from random import randint
-
+import random
 class CVRPTWInfo :
     def __init__(self,instance_fileName: str) -> None:
         self.filename: str = instance_fileName
@@ -58,14 +57,30 @@ class CVRPTWInfo :
 
     def make_random_paths(self) ->list[list[int]]:
         # return [[0,1,2,3,4,0],[0,9,8,7,0],...]
+        max_route_len = 6
+        unserviced = [i for i in range(1, self.clients_number + 1)]
+        #print(unserviced)
+        random.shuffle(unserviced)
         routes = []
-
-        for i in range(self.vehicules_number):
-            routes.append([0])
-
-        for i in range(1,self.clients_number + 1):
-            picked_truck = randint(0, self.vehicules_number - 1)
-            routes[picked_truck].append(i)
-
-        for r in routes:
-            r.append(0)
+        cur_route = [0]
+        route_demand = 0
+        route_length = 0
+        while unserviced:
+            # choose the closest unserviced node from the last node of the current node
+            i = min([i for i in range(len(unserviced))], \
+                    key=lambda x: self.distances[cur_route[-1] if random.uniform(0, 1) < 0.9 else 1][unserviced[x]])
+            node = unserviced[i]
+            if route_length <=max_route_len and route_demand + self.demand[node] <= self.capacity:
+                cur_route += [node]
+                route_length += 1
+                route_demand += self.demand[node]
+                del unserviced[i]
+                continue
+            # to return to the depot
+            cur_route += [0]
+            routes += [cur_route]
+            cur_route = [0]
+            route_demand = 0
+            route_length = 0
+        routes += [cur_route + [0]]
+        return routes
