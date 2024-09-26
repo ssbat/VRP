@@ -22,7 +22,7 @@ class Chromosome(object):
                     self.is_valid = True
             #add time and capacity penalties if the chromosome is incorrect
             else:
-                self.fitness += 100 * (self.timePen + abs(self.capacityPen))
+                self.fitness += 100 * (self.timePen + self.capacityPen)
 
             return self.fitness
 
@@ -59,9 +59,9 @@ class Chromosome(object):
 
             #ajoute la capacité excès à la pénalité de capacité
             if capacity < 0:
-                self.capacityPen += capacity
+                self.capacityPen += abs(capacity)
 
-        if self.capacityPen < 0 or self.timePen > 0:
+        if self.capacityPen > 0 or self.timePen > 0:
             valid = False
         return valid
 
