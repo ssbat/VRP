@@ -33,6 +33,9 @@ class Interface:
         self.max_t = self.info.due_dates[0]
         self.zoom = 11
         self.speed = 1
+        self.show_routes = True
+        self.show_clients = True
+        self.show_trucks = True
 
         self.build_instances()
         self.generate_background()
@@ -65,16 +68,25 @@ class Interface:
     def reverse(self):
         self.speed_slider.setValue(-1)
 
+    def show_hide_clients(self):
+        self.show_clients = not self.show_clients
+
+    def show_hide_routes(self):
+        self.show_routes = not self.show_routes
+    
+    def show_hide_trucks(self):
+        self.show_trucks = not self.show_trucks
+
 
     def build_widgets(self):
-        self.speed_slider = Slider(self.win, 100, 400, 250, 20, min=-30, max=30, step = 1, initial = self.speed)
+        self.speed_slider = Slider(self.win, 60, 400, 250, 20, min=-30, max=30, step = 1, initial = self.speed)
         self.speed_display = TextBox(self.win, 150, 350, 130, 35)
 
-        self.t_slider = Slider(self.win, 100, 150, 250, 20, min=0, max=self.max_t, step = 1, initial = 0)
+        self.t_slider = Slider(self.win, 60, 150, 250, 20, min=0, max=self.max_t, step = 1, initial = 0)
         self.t_display = TextBox(self.win, 150, 100, 130, 35)
 
         self.play_button = Button(
-            self.win, 100,  600,  250,  50,
+            self.win, 60,  600,  250,  50,
             text='Play', 
             fontSize=30, 
             margin=20,
@@ -85,7 +97,7 @@ class Interface:
         )      
 
         self.pause_button = Button(
-            self.win, 100,  700,  250,  50,
+            self.win, 60,  700,  250,  50,
             text='Pause', 
             fontSize=30, 
             margin=20,
@@ -96,7 +108,7 @@ class Interface:
         ) 
 
         self.reverse_button = Button(
-            self.win, 100,  800,  250,  50,
+            self.win, 60,  800,  250,  50,
             text='Reverse', 
             fontSize=30, 
             margin=20,
@@ -104,6 +116,39 @@ class Interface:
             pressedColour=Interface.black, 
             radius=20, 
             onClick=lambda: self.reverse()
+        ) 
+
+        self.show_clients_button = Button(
+            self.win, 1610,  600,  250,  50,
+            text='Show/hide clients', 
+            fontSize=30, 
+            margin=20,
+            inactiveColour= Interface.white,  
+            pressedColour=Interface.black, 
+            radius=20, 
+            onClick=lambda: self.show_hide_clients()
+        ) 
+
+        self.show_routes_button = Button(
+            self.win, 1610,  700,  250,  50,
+            text='Show/hide routes', 
+            fontSize=30, 
+            margin=20,
+            inactiveColour= Interface.white,  
+            pressedColour=Interface.black, 
+            radius=20, 
+            onClick=lambda: self.show_hide_routes()
+        ) 
+
+        self.show_trucks_button = Button(
+            self.win, 1610,  800,  250,  50,
+            text='Show/hide trucks', 
+            fontSize=30, 
+            margin=20,
+            inactiveColour= Interface.white,  
+            pressedColour=Interface.black, 
+            radius=20, 
+            onClick=lambda: self.show_hide_trucks()
         ) 
 
 
@@ -143,12 +188,19 @@ class Interface:
 
 
     def display(self):
-        self.win.blit(self.background,(0,0))
-        for c in self.clients:
-            c.draw(self)
 
-        for t in self.trucks:
-            t.draw(self)
+        if self.show_routes:
+            self.win.blit(self.background,(0,0))
+        else:
+            self.win.fill(Interface.grey)
+
+        if self.show_clients:
+            for c in self.clients:
+                c.draw(self)
+
+        if self.show_trucks:
+            for t in self.trucks:
+                t.draw(self)
             
     
     def convert_to_screen(self, coord):
@@ -237,8 +289,7 @@ class Truck:
         pygame.draw.circle(interface.win, Interface.white, (x,y), 9)
         pygame.draw.circle(interface.win, self.color, (x,y), 8)
 
-
-for prefix in ['R','C','RC']:
+""" for prefix in ['R','C','RC']:
     for hundreds in ['10','20']:
         for units in range(1,9):
             for decimals in ['25', '50', '100']:
@@ -249,7 +300,13 @@ for prefix in ['R','C','RC']:
                     chromosome = Chromosome(info, routes)
                     Interface(chromosome, True)
                 except:
-                    pass
+                    pass """
+
+path = 'instances/RC208.100.txt'
+info = CVRPTWInfo(path)
+routes = info.make_random_paths()
+chromosome = Chromosome(info, routes)
+Interface(chromosome, True)
 
 
 pygame.display.quit()
