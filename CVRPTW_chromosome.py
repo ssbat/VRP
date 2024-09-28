@@ -22,15 +22,11 @@ class Chromosome(object):
                     self.is_valid = True
             #add time and capacity penalties if the chromosome is incorrect
             else:
-                self.fitness += 100 * (self.timePen + self.capacityPen)
+                self.fitness += 25 * (self.timePen + self.capacityPen)
 
             return self.fitness
 
     def fitness_2(self):
-        pass
-    
-    # To Do (add the necessary parameters)
-    def croisement(self):
         pass
     
     # Je ne suis pas sur pour l'id s'il le faut ou pas ou si on peut récupérer la route du camion autrement
