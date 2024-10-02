@@ -16,7 +16,8 @@ class Population:
         pass
     
     def create_initial_population(self):
-        self.chromosomes=[Chromosome(self.info, self.info.make_random_paths()) for _ in range(self.population_size)]
+        chromosome_random = list(range(1, self.info.clients_number+1))
+        self.chromosomes=[Chromosome(self.info,random.sample(chromosome_random,len(chromosome_random))) for _ in range(self.population_size)]
 
     def sort(self):
         chromosomeValid, chromosomeInvalid = [], []

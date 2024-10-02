@@ -1,4 +1,5 @@
 
+import random
 from CVRPTW_chromosome import Chromosome
 from CVRPTW_info import CVRPTWInfo
 
@@ -304,8 +305,9 @@ class Truck:
 
 path = 'instances/RC208.100.txt'
 info = CVRPTWInfo(path)
-routes = info.make_random_paths()
-chromosome = Chromosome(info, routes)
+chromosome_random = list(range(1,info.clients_number+1))
+random.shuffle(chromosome_random)
+chromosome = Chromosome(info, chromosome_random)
 Interface(chromosome, True)
 
 

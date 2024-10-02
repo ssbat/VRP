@@ -5,7 +5,6 @@ class CVRPTWInfo :
     def __init__(self,instance_fileName: str) -> None:
         self.filename: str = instance_fileName
         self.capacity:int = None
-        self.vehicules_number : int = None
         self.clients_number : int = None
         self.coords: list[tuple[float,float]] = None
         self.distances:list[list[int]] = []
@@ -16,13 +15,10 @@ class CVRPTWInfo :
         self.read_instance_file()
         self.construct_distance_matrix()
         pass
-    
-
 
     def read_instance_file(self):
         with open(self.filename) as f:
             file_lines= f.readlines()
-            self.vehicules_number = int(file_lines[4].split()[0])
             self.capacity = int(file_lines[4].split()[1])
             self.clients_number = len(file_lines) - 11
             self.coords=[(-1,-1) for i in range(self.clients_number +1)]
@@ -54,33 +50,3 @@ class CVRPTWInfo :
             print()
             print()
 
-
-    def make_random_paths(self) ->list[list[int]]:
-        # return [[0,1,2,3,4,0],[0,9,8,7,0],...]
-        max_route_len = 6
-        unserviced = [i for i in range(1, self.clients_number + 1)]
-        #print(unserviced)
-        random.shuffle(unserviced)
-        routes = []
-        cur_route = [0]
-        route_demand = 0
-        route_length = 0
-        while unserviced:
-            # choose the closest unserviced node from the last node of the current node
-            i = min([i for i in range(len(unserviced))], \
-                    key=lambda x: self.distances[cur_route[-1] if random.uniform(0, 1) < 0.9 else 1][unserviced[x]])
-            node = unserviced[i]
-            if route_length <=max_route_len and route_demand + self.demand[node] <= self.capacity:
-                cur_route += [node]
-                route_length += 1
-                route_demand += self.demand[node]
-                del unserviced[i]
-                continue
-            # to return to the depot
-            cur_route += [0]
-            routes += [cur_route]
-            cur_route = [0]
-            route_demand = 0
-            route_length = 0
-        routes += [cur_route + [0]]
-        return routes
