@@ -14,6 +14,9 @@ class Chromosome(object):
 
         self.info=info
         self.fitness = 0
+        self.earlyTimePen = 0
+        self.lateTimePen = 0
+        
         self.decode_chromosome(self.chromosome)
         self.calculFitness()
         pass
@@ -31,17 +34,17 @@ class Chromosome(object):
         self.max_elapsed_time = 0
 
     # To Change
-    def calculFitness(self):
+    def calculFitness(self, w1=10, w2=5):
         #calcul fitness by distance
         for i in range (len(self.routes)):
             self.fitness += sum(self.info.distances[self.routes[i][j]][self.routes[i][j + 1]] for j in range(len(self.routes[i]) - 1))
 
             #change the flag of is_valid if the chromosome is correct
-            if self.isValid(True):
+            if self.earlyTimePen == 0 and self.lateTimePen == 0:
                     self.is_valid = True
             #add time and capacity penalties if the chromosome is incorrect
             else:
-                self.fitness += 25 * (self.timePen + self.capacityPen)
+                self.fitness += w1 * self.earlyTimePen + w2 * self.lateTimePen
 
             return self.fitness
 
@@ -108,14 +111,21 @@ class Chromosome(object):
 
     def check_time(self, source: int, dest: int, distance: float=None) -> bool:
         elapsed_new = self.info.distances[source][dest]+self.elapsed_time
+        # check if the vehicle arrive before the ready time
+        if elapsed_new < self.info.ready_times[dest]:
+            self.earlyTimePen += self.info.ready_times[dest] - elapsed_new
+            elapsed_new = self.info.ready_times[dest]
+            
         if elapsed_new <= self.info.due_dates[dest]:
               # to check if i can return to the depot before the due date if i visited dest
               return_time = self.info.distances[dest][0]
               if elapsed_new + self.info.service_times[dest] + return_time <= self.info.due_dates[0]:
                   return True
               else:
+                  self.lateTimePen += elapsed_new + self.info.service_times[dest] + return_time - self.info.due_dates[0]
                   return False
         else:
+            self.lateTimePen += elapsed_new + self.info.service_times[dest] - self.info.due_dates[dest]
             return False
                   
 
