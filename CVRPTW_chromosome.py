@@ -16,7 +16,8 @@ class Chromosome(object):
         self.fitness = 0
         self.earlyTimePen = 0
         self.lateTimePen = 0
-        
+        self.travel_distance=0
+        self.total_travel_distance=0
         self.decode_chromosome(self.chromosome)
         self.calculFitness()
         pass
@@ -32,12 +33,17 @@ class Chromosome(object):
         self.current_load = 0
         self.elapsed_time = 0
         self.max_elapsed_time = 0
-
     # To Change
-    def calculFitness(self, w1=10, w2=5):
+    def calculFitness(self, w1=1, w2=1):
+        for route in self.routes:
+            for source, dest in pairwise(route):
+                self.calcul_penality_fitness(source,dest)
+        
         #calcul fitness by distance
         for i in range (len(self.routes)):
-            self.fitness += sum(self.info.distances[self.routes[i][j]][self.routes[i][j + 1]] for j in range(len(self.routes[i]) - 1))
+            self.travel_distance=sum(self.info.distances[self.routes[i][j]][self.routes[i][j + 1]] for j in range(len(self.routes[i]) - 1))
+            self.total_travel_distance+=self.travel_distance
+            self.fitness += self.travel_distance
 
             #change the flag of is_valid if the chromosome is correct
             if self.earlyTimePen == 0 and self.lateTimePen == 0:
@@ -46,7 +52,7 @@ class Chromosome(object):
             else:
                 self.fitness += w1 * self.earlyTimePen + w2 * self.lateTimePen
 
-            return self.fitness
+        return self.fitness
 
     def fitness_2(self):
         pass
@@ -110,6 +116,18 @@ class Chromosome(object):
         print()
 
     def check_time(self, source: int, dest: int, distance: float=None) -> bool:
+        elapsed_new = self.info.distances[source][dest]+self.elapsed_time
+        if elapsed_new <= self.info.due_dates[dest]:
+              # to check if i can return to the depot before the due date if i visited dest
+              return_time = self.info.distances[dest][0]
+              if elapsed_new + self.info.service_times[dest] + return_time <= self.info.due_dates[0]:
+                  return True
+              else:
+                  return False
+        else:
+            return False
+
+    def calcul_penality_fitness(self, source: int, dest: int, distance: float=None) -> bool:
         elapsed_new = self.info.distances[source][dest]+self.elapsed_time
         # check if the vehicle arrive before the ready time
         if elapsed_new < self.info.ready_times[dest]:
