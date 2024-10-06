@@ -33,24 +33,27 @@ class Chromosome(object):
         self.current_load = 0
         self.elapsed_time = 0
         self.max_elapsed_time = 0
+        
     # To Change
     def calculFitness(self, w1=1, w2=1):
+        self.elapsed_time_fitness = 0
+        self.fitnessRoute = []
         for route in self.routes:
+            self.timeRoute = 0
             for source, dest in pairwise(route):
                 self.calcul_penality_fitness(source,dest)
-        
-        #calcul fitness by distance
-        for i in range (len(self.routes)):
-            self.travel_distance=sum(self.info.distances[self.routes[i][j]][self.routes[i][j + 1]] for j in range(len(self.routes[i]) - 1))
-            self.total_travel_distance+=self.travel_distance
-            self.fitness += self.travel_distance
-
-            #change the flag of is_valid if the chromosome is correct
-            if self.earlyTimePen == 0 and self.lateTimePen == 0:
-                    self.is_valid = True
-            #add time and capacity penalties if the chromosome is incorrect
-            else:
-                self.fitness += w1 * self.earlyTimePen + w2 * self.lateTimePen
+                self.travel_distance = self.info.distances[source][dest]
+                self.total_travel_distance+=self.travel_distance
+                self.fitness += self.travel_distance
+            self.fitnessRoute.append(self.timeRoute)
+            self.elapsed_time_fitness += self.timeRoute
+            
+        #change the flag of is_valid if the chromosome is correct
+        if self.earlyTimePen == 0 and self.lateTimePen == 0:
+                self.is_valid = True
+        #add time and capacity penalties if the chromosome is incorrect
+        else:
+            self.fitness += w1 * self.earlyTimePen + w2 * self.lateTimePen
 
         return self.fitness
 
@@ -96,7 +99,7 @@ class Chromosome(object):
         pass
 
     # route that respect capacity and due time without respecting arrival time
-    def decode_chromosome(self,chromosome) ->list[list[int]]:
+    def decode_chromosome(self,chromosome):
         self.intitialize_decoding_variables()
         random_indices=[0]+chromosome+[0]
         for source, dest in pairwise(random_indices):
@@ -115,7 +118,7 @@ class Chromosome(object):
         print(f"{chromosome} => {self.routes}")
         print()
 
-    def check_time(self, source: int, dest: int, distance: float=None) -> bool:
+    def check_time(self, source: int, dest: int, distance: float=None):
         elapsed_new = self.info.distances[source][dest]+self.elapsed_time
         if elapsed_new <= self.info.due_dates[dest]:
               # to check if i can return to the depot before the due date if i visited dest
@@ -127,24 +130,18 @@ class Chromosome(object):
         else:
             return False
 
-    def calcul_penality_fitness(self, source: int, dest: int, distance: float=None) -> bool:
-        elapsed_new = self.info.distances[source][dest]+self.elapsed_time
-        # check if the vehicle arrive before the ready time
-        if elapsed_new < self.info.ready_times[dest]:
-            self.earlyTimePen += self.info.ready_times[dest] - elapsed_new
-            elapsed_new = self.info.ready_times[dest]
-            
-        if elapsed_new <= self.info.due_dates[dest]:
-              # to check if i can return to the depot before the due date if i visited dest
-              return_time = self.info.distances[dest][0]
-              if elapsed_new + self.info.service_times[dest] + return_time <= self.info.due_dates[0]:
-                  return True
-              else:
-                  self.lateTimePen += elapsed_new + self.info.service_times[dest] + return_time - self.info.due_dates[0]
-                  return False
+    def calcul_penality_fitness(self, source: int, dest: int):
+        self.timeRoute += self.info.distances[source][dest]
+        # add early time penalty if the vehicle arrives before the ready time
+        if self.timeRoute < self.info.ready_times[dest]:
+            self.earlyTimePen += self.info.ready_times[dest] - self.timeRoute
+            self.timeRoute += self.info.ready_times[dest] + self.info.service_times[dest] - self.timeRoute
+        # add late time penalty if the vehicle arrives after the due date
         else:
-            self.lateTimePen += elapsed_new + self.info.service_times[dest] - self.info.due_dates[dest]
-            return False
+            if self.timeRoute > self.info.due_dates[dest]:
+                self.lateTimePen += self.timeRoute + self.info.service_times[dest] - self.info.due_dates[dest]
+            self.timeRoute += self.info.service_times[dest]
+            
                   
 
     def move_vehicle(self, source: int, dest: int, distance: float=None):
