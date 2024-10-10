@@ -20,7 +20,7 @@ class CVRPTWInfo :
         with open(self.filename) as f:
             file_lines= f.readlines()
             self.capacity = int(file_lines[4].split()[1])
-            self.clients_number = len(file_lines) - 11
+            self.clients_number = len(file_lines) - 10
             self.coords=[(-1,-1) for i in range(self.clients_number +1)]
             # data starts from the line 9
             for (index, line) in enumerate(file_lines[9 : 9+self.clients_number +1]):
