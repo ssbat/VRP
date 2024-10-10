@@ -16,10 +16,15 @@ class CVRPTW:
     def croisement(self,chromsomes):
         pass
 
+    def mutation(self,chromosomes):
+        pass
+
     def optimize(self):
-        nb_enfant= 4
+        nb_enfant= 2
         for generation in range(self.nb_generation) :
             parents=self.population.rank_selection_sorted(nb_enfant)
+            childrens=self.croisement(parents)
+            self.mutation(childrens)
             pass
         pass
     
