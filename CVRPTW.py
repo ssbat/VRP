@@ -29,7 +29,7 @@ class CVRPTW:
                 start_index_crossing_point  = size // 3
                 end_index_crossing_point = start_index_crossing_point * 2
 
-                child_1 = [None] * len(parent_1.chromosome)
+                child_1 = [None] * size
                 child_1[start_index_crossing_point:end_index_crossing_point] = parent_1.chromosome[start_index_crossing_point:end_index_crossing_point]
 
                 index_child = 0
