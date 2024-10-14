@@ -15,39 +15,45 @@ class CVRPTW:
         pass
 
 
-    def croisement_OX(self, chromosomes : list[Chromosome]) -> list[Chromosome]:
+    def croisement_OX(self, chromosomes : list[Chromosome], taux_croisement : float = 0.8) -> list[Chromosome]:
         children = []
         while chromosomes:
             parent_1, parent_2 = random.sample(chromosomes, 2)
             chromosomes.remove(parent_1)
             chromosomes.remove(parent_2)
 
-            size = len(parent_1.chromosome)
-            start_index_crossing_point  = size // 3
-            end_index_crossing_point = start_index_crossing_point * 2
+            random_value = random.random()
 
-            child_1 = [None] * len(parent_1.chromosome)
-            child_1[start_index_crossing_point:end_index_crossing_point] = parent_1.chromosome[start_index_crossing_point:end_index_crossing_point]
+            if random_value < taux_croisement:
+                size = len(parent_1.chromosome)
+                start_index_crossing_point  = size // 3
+                end_index_crossing_point = start_index_crossing_point * 2
 
-            index_child = 0
-            for city in parent_2.chromosome:
-                if city not in child_1:
-                    while child_1[index_child] is not None:
-                        index_child += 1
-                    child_1[index_child] = city
+                child_1 = [None] * len(parent_1.chromosome)
+                child_1[start_index_crossing_point:end_index_crossing_point] = parent_1.chromosome[start_index_crossing_point:end_index_crossing_point]
 
-            child_2 = [None] * len(parent_2.chromosome)
-            child_2[start_index_crossing_point:end_index_crossing_point] = parent_2.chromosome[start_index_crossing_point:end_index_crossing_point]
- 
-            index_child = 0
-            for city in parent_1.chromosome:
-                if city not in child_2:
-                    while child_2[index_child] is not None:
-                        index_child += 1
-                    child_2[index_child] = city
+                index_child = 0
+                for city in parent_2.chromosome:
+                    if city not in child_1:
+                        while child_1[index_child] is not None:
+                            index_child += 1
+                        child_1[index_child] = city
 
-            children.append(Chromosome(self.info, child_1))
-            children.append(Chromosome(self.info, child_2))
+                child_2 = [None] * len(parent_2.chromosome)
+                child_2[start_index_crossing_point:end_index_crossing_point] = parent_2.chromosome[start_index_crossing_point:end_index_crossing_point]
+    
+                index_child = 0
+                for city in parent_1.chromosome:
+                    if city not in child_2:
+                        while child_2[index_child] is not None:
+                            index_child += 1
+                        child_2[index_child] = city
+
+                children.append(Chromosome(self.info, child_1))
+                children.append(Chromosome(self.info, child_2))
+            else:
+                children.append(Chromosome(self.info, parent_1.chromosome.copy()))
+                children.append(Chromosome(self.info, parent_2.chromosome.copy()))
 
         return children
 
