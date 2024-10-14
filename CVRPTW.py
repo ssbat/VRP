@@ -15,7 +15,7 @@ class CVRPTW:
         pass
 
 
-    def croisement(self, chromosomes : list) -> list[Chromosome]:
+    def croisement_OX(self, chromosomes : list[Chromosome]) -> list[Chromosome]:
         children = []
         while chromosomes:
             parent_1, parent_2 = random.sample(chromosomes, 2)
@@ -55,7 +55,7 @@ class CVRPTW:
         nb_enfant= 4
         for generation in range(self.nb_generation) :
             parents=self.population.rank_selection_sorted(nb_enfant)
-            self.croisement(parents)
+            children = self.croisement_OX(parents)
             pass
         pass
     
