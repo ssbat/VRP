@@ -61,7 +61,7 @@ class CVRPTW:
         nb_enfant= 4
         for generation in range(self.nb_generation) :
             parents=self.population.rank_selection_sorted(nb_enfant)
-            children = self.croisement_OX(parents)
+            childrens = self.croisement_OX(parents)
             pass
         pass
     
