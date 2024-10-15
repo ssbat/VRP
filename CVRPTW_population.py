@@ -10,6 +10,7 @@ class Population:
         self.population_size = 20
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
+        self.fitness_history = dict()
         self.create_initial_population()
         self.chromosomes = self.sort()
         random.seed()
