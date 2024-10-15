@@ -60,9 +60,6 @@ class CVRPTW:
     def mutation(self,chromosomes):
         pass
 
-    def mutation(self,chromosomes):
-        pass
-
     def optimize(self):
         nb_enfant= 2
         for generation in range(self.nb_generation) :
