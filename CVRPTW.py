@@ -57,14 +57,29 @@ class CVRPTW:
 
         return children
 
-    def mutation(self,chromosomes):
-        pass
+    def mutation(self,chromosomes:list[Chromosome],taux_mutation=0.8):
+        taille_chromsome=self.info.clients_number
+        for i in range(len(chromosomes)):
+            random_value = random.random()
+            if random_value < taux_mutation:
+                index_1=-1
+                index_2=-1
+                while index_1 == index_2:
+                    index_1 = random.randint(0,taille_chromsome)
+                    index_2 = random.randint(0,taille_chromsome)
+                chromosomes[i].chromosome[index_1],chromosomes[i].chromosome[index_2]=chromosomes[i].chromosome[index_2],chromosomes[i].chromosome[index_1]
+
 
     def optimize(self):
         nb_enfant= 2
         for generation in range(self.nb_generation) :
+            self.population.sort()
             parents=self.population.rank_selection_sorted(nb_enfant)
             childrens = self.croisement_OX(parents)
+            self.mutation(childrens)
+
+            # To do -> replace by ranking
+            self.population.chromosomes[-nb_enfant:]= childrens
             pass
         pass
     
