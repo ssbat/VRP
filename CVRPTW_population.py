@@ -11,6 +11,11 @@ class Population:
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
         self.fitness_history = dict()
+        self.best_solution = {
+            'generation' : 0,
+            'fitness' : 0,
+            'routes' : []
+        }
         self.create_initial_population()
         self.chromosomes = self.sort()
         random.seed()

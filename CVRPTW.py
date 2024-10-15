@@ -75,6 +75,12 @@ class CVRPTW:
         for generation in range(self.nb_generation) :
             self.population.sort()
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
+            if self.population.chromosomes[0].fitness > self.population.best_solution['fitness']:    
+                self.population.best_solution.update({
+                    'generation': generation,
+                    'fitness': self.population.chromosomes[0].fitness,
+                    'routes': self.population.chromosomes[0].chromosome
+                })
             parents=self.population.rank_selection_sorted(nb_enfant)
             childrens = self.croisement_OX(parents)
             self.mutation(childrens)
