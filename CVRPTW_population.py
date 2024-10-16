@@ -7,11 +7,18 @@ class Population:
     def __init__(self, nb_generation, info: CVRPTWInfo):
         self.nb_generation=nb_generation
         self.info = info
-        self.population_size = 20
+        self.population_size = 50
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
+        self.fitness_history = dict()
+        self.best_solution = {
+            'generation' : 0,
+            'fitness' : 99999999,
+            'routes' : [],
+            'chromosome':[]
+        }
         self.create_initial_population()
-        self.chromosomes = self.sort()
+        self.sort()
         random.seed()
         pass
     
@@ -19,17 +26,8 @@ class Population:
         chromosome_random = list(range(1, self.info.clients_number+1))
         self.chromosomes=[Chromosome(self.info,random.sample(chromosome_random,len(chromosome_random))) for _ in range(self.population_size)]
 
-    def sort(self):
-        chromosomeValid, chromosomeInvalid = [], []
-        for i in self.chromosomes:
-            i.calculFitness()
-            if i.is_valid == False:
-                chromosomeInvalid.append(i)
-            else:
-                chromosomeValid.append(i)
-        chromosomeInvalid.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
-        chromosomeValid.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
-        return chromosomeValid + chromosomeInvalid
+    def sort(self) :
+        self.chromosomes.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
     
     def roulette_wheel_selection(self,num=2):
         selected_chromomes=[]
