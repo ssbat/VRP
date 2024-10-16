@@ -2,6 +2,7 @@ from CVRPTW_info import CVRPTWInfo
 from CVRPTW_population import Population
 from CVRPTW_chromosome import Chromosome
 import random
+import matplotlib.pyplot as plt
 
 
 class CVRPTW:
@@ -65,8 +66,8 @@ class CVRPTW:
                 index_1=-1
                 index_2=-1
                 while index_1 == index_2:
-                    index_1 = random.randint(0,taille_chromsome)
-                    index_2 = random.randint(0,taille_chromsome)
+                    index_1 = random.randint(0,taille_chromsome - 1 )
+                    index_2 = random.randint(0,taille_chromsome - 1)
                 chromosomes[i].chromosome[index_1],chromosomes[i].chromosome[index_2]=chromosomes[i].chromosome[index_2],chromosomes[i].chromosome[index_1]
 
 
@@ -75,19 +76,41 @@ class CVRPTW:
         for generation in range(self.nb_generation) :
             self.population.sort()
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
-            if self.population.chromosomes[0].fitness > self.population.best_solution['fitness']:    
+            if self.population.chromosomes[0].fitness < self.population.best_solution['fitness']:    
                 self.population.best_solution.update({
                     'generation': generation,
                     'fitness': self.population.chromosomes[0].fitness,
-                    'routes': self.population.chromosomes[0].chromosome
+                    'routes': self.population.chromosomes[0].routes,
+                    'chromosome': self.population.chromosomes[0].chromosome
                 })
             parents=self.population.rank_selection_sorted(nb_enfant)
             childrens = self.croisement_OX(parents)
             self.mutation(childrens)
+            for children in childrens:
+                children.update()
 
             # To do -> replace by ranking
             self.population.chromosomes[-nb_enfant:]= childrens
+            if generation % 10000 == 0:
+                print(f"Generation: {generation} best fitness: {self.population.best_solution['fitness']}")
             pass
+        print(self.population.best_solution)
+        self.plotHistory()
         pass
     
 
+    def plotHistory(self):
+        x_values = list(self.population.fitness_history.keys())
+        y_values = list(self.population.fitness_history.values())
+
+        # Create the plot
+        plt.figure(figsize=(6, 4))
+        plt.plot(x_values, y_values, marker='o')
+
+        # Add labels and title
+        plt.xlabel("generations")
+        plt.ylabel("fitness")
+        plt.title("fitness of the best chromosome")
+        # Display the plot
+        plt.grid(True)
+        plt.show()
