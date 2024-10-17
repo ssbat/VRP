@@ -1,3 +1,4 @@
+import copy
 from CVRPTW_info import CVRPTWInfo
 from CVRPTW_population import Population
 from CVRPTW_chromosome import Chromosome
@@ -72,17 +73,13 @@ class CVRPTW:
 
 
     def optimize(self):
-        nb_enfant= 2
+        nb_enfant= 4
+        self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
         for generation in range(self.nb_generation) :
             self.population.sort()
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
-            if self.population.chromosomes[0].fitness < self.population.best_solution['fitness']:    
-                self.population.best_solution.update({
-                    'generation': generation,
-                    'fitness': self.population.chromosomes[0].fitness,
-                    'routes': self.population.chromosomes[0].routes,
-                    'chromosome': self.population.chromosomes[0].chromosome
-                })
+            if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:    
+                self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
             parents=self.population.rank_selection_sorted(nb_enfant)
             childrens = self.croisement_OX(parents)
             self.mutation(childrens)
@@ -92,7 +89,7 @@ class CVRPTW:
             # To do -> replace by ranking
             self.population.chromosomes[-nb_enfant:]= childrens
             if generation % 10000 == 0:
-                print(f"Generation: {generation} best fitness: {self.population.best_solution['fitness']}")
+                print(f"Generation: {generation} best fitness: {self.population.best_solution.fitness}")
             pass
         print(self.population.best_solution)
         self.plotHistory()

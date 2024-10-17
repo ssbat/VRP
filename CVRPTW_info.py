@@ -2,7 +2,7 @@
 import math
 import random
 class CVRPTWInfo :
-    def __init__(self,instance_fileName: str) -> None:
+    def __init__(self,instance_fileName: str,clients_number) -> None:
         self.filename: str = instance_fileName
         self.capacity:int = None
         self.clients_number : int = None
@@ -12,6 +12,7 @@ class CVRPTWInfo :
         self.ready_times : list[int] = []
         self.due_dates : list[int] = []
         self.service_times : list[int] = []
+        self.clients_number=clients_number
         self.read_instance_file()
         self.construct_distance_matrix()
         pass
@@ -20,7 +21,7 @@ class CVRPTWInfo :
         with open(self.filename) as f:
             file_lines= f.readlines()
             self.capacity = int(file_lines[4].split()[1])
-            self.clients_number = len(file_lines) - 10
+            # self.clients_number = len(file_lines) - 10
             self.coords=[(-1,-1) for i in range(self.clients_number +1)]
             # data starts from the line 9
             for (index, line) in enumerate(file_lines[9 : 9+self.clients_number +1]):
@@ -30,7 +31,8 @@ class CVRPTWInfo :
                 self.ready_times.append(int(line[4]))
                 self.due_dates.append(int(line[5]))
                 self.service_times.append(int(line[6]))
-    
+        pass
+
     def compute_euclidean_distance(self, n1, n2):
  
         return round(math.sqrt((n1[0] - n2[0])**2 + (n1[1] - n2[1])**2),2)

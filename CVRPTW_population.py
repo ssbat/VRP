@@ -7,16 +7,11 @@ class Population:
     def __init__(self, nb_generation, info: CVRPTWInfo):
         self.nb_generation=nb_generation
         self.info = info
-        self.population_size = 50
+        self.population_size = 100
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
         self.fitness_history = dict()
-        self.best_solution = {
-            'generation' : 0,
-            'fitness' : 99999999,
-            'routes' : [],
-            'chromosome':[]
-        }
+        self.best_solution:Chromosome = None
         self.create_initial_population()
         self.sort()
         random.seed()
