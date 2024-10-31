@@ -3,7 +3,8 @@ from CVRPTW_info import CVRPTWInfo
 from constant import ClientNumber
 
 class Chromosome(object):
-    def __init__(self, info: CVRPTWInfo,chromosome=[],routes=None) :
+    info=None
+    def __init__(self, chromosome=[], routes=None) :
         self.is_valid = False
         
         #for 6 clients
@@ -13,11 +14,14 @@ class Chromosome(object):
         #decoded chromosome (transorm the chromosome to valid routes)
         # routes=[[1,2,3,4,1],[1,5,6,7]]
         self.routes=[[0]]
-        self.info=info
         self.decode_chromosome(self.chromosome)
         self.calculFitness()
+        if Chromosome.info == None:
+            print("Warning: Info is None")
         pass
 
+    def set_info_object(info:CVRPTWInfo):
+        Chromosome.info = info
 
     def update(self):
         self.decode_chromosome(self.chromosome)

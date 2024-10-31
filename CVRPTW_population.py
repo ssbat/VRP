@@ -4,22 +4,24 @@ from CVRPTW_info import CVRPTWInfo
 
 
 class Population:
-    def __init__(self, nb_generation, info: CVRPTWInfo):
+    def __init__(self, nb_generation, info: CVRPTWInfo,population_size):
         self.nb_generation=nb_generation
         self.info = info
-        self.population_size = 1000
+        self.population_size = population_size
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
         self.fitness_history = dict()
         self.best_solution:Chromosome = None
+        Chromosome.set_info_object(info)
         self.create_initial_population()
         self.sort()
         random.seed()
+
         pass
     
     def create_initial_population(self):
         chromosome_random = list(range(1, self.info.clients_number+1))
-        self.chromosomes=[Chromosome(self.info,random.sample(chromosome_random,len(chromosome_random))) for _ in range(self.population_size)]
+        self.chromosomes=[Chromosome(random.sample(chromosome_random,len(chromosome_random))) for _ in range(self.population_size)]
 
     def sort(self) :
        #self.chromosomes.sort(key=lambda chromosome: (not chromosome.is_valid, chromosome.fitness))

@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 
 
 class CVRPTW:
-    def __init__(self,info: CVRPTWInfo,nb_generation):
+    def __init__(self,info: CVRPTWInfo, nb_generation, population_size):
         self.info = info
         self.best_routes=[]
         self.best_solution = None 
         fitness_history = []
-        self.population = Population(nb_generation, info)
+        self.population = Population(nb_generation, info, population_size)
         self.nb_generation = nb_generation
         pass
 
@@ -51,11 +51,11 @@ class CVRPTW:
                             index_child += 1
                         child_2[index_child] = city
 
-                children.append(Chromosome(self.info, child_1))
-                children.append(Chromosome(self.info, child_2))
+                children.append(Chromosome(child_1))
+                children.append(Chromosome(child_2))
             else:
-                children.append(Chromosome(self.info, parent_1.chromosome.copy()))
-                children.append(Chromosome(self.info, parent_2.chromosome.copy()))
+                children.append(Chromosome(parent_1.chromosome.copy()))
+                children.append(Chromosome(parent_2.chromosome.copy()))
 
         return children
 
@@ -80,7 +80,7 @@ class CVRPTW:
         ind4 = [gene if gene not in part2 else rule2to1[gene] for gene in ind2[:cxpoint1]] + part2 + \
             [gene if gene not in part2 else rule2to1[gene] for gene in ind2[cxpoint2+1:]]
 
-        return [Chromosome(self.info, ind3),Chromosome(self.info, ind4)]
+        return [Chromosome(ind3),Chromosome(ind4)]
 
     def mutation(self,chromosomes:list[Chromosome],taux_mutation=0.8):
         taille_chromsome=self.info.clients_number
