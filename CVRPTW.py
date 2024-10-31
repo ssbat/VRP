@@ -59,30 +59,57 @@ class CVRPTW:
 
         return children
 
+    def cx_partially_matched(self,childrens: list):
+        ind1 = childrens[0].chromosome.copy()  # copy to avoid modifying original
+        ind2 = childrens[1].chromosome.copy()  # copy to avoid modifying original
+        cxpoint1, cxpoint2 = sorted(random.sample(range(min(len(ind1), len(ind2))), 2))
+        part1 = ind2[cxpoint1:cxpoint2+1]
+        part2 = ind1[cxpoint1:cxpoint2+1]
+        
+        rule1to2 = list(zip(part1, part2))
+        is_fully_merged = False
+        while not is_fully_merged:
+            rule1to2, is_fully_merged = merge_rules(rules=rule1to2)
+        
+        rule2to1 = {rule[1]: rule[0] for rule in rule1to2}
+        rule1to2 = dict(rule1to2)
+        
+        ind3 = [gene if gene not in part1 else rule1to2[gene] for gene in ind1[:cxpoint1]] + part1 + \
+            [gene if gene not in part1 else rule1to2[gene] for gene in ind1[cxpoint2+1:]]
+
+        ind4 = [gene if gene not in part2 else rule2to1[gene] for gene in ind2[:cxpoint1]] + part2 + \
+            [gene if gene not in part2 else rule2to1[gene] for gene in ind2[cxpoint2+1:]]
+
+        return [Chromosome(self.info, ind3),Chromosome(self.info, ind4)]
+
     def mutation(self,chromosomes:list[Chromosome],taux_mutation=0.8):
         taille_chromsome=self.info.clients_number
-        for i in range(len(chromosomes)):
-            random_value = random.random()
-            if random_value < taux_mutation:
-                index_1=-1
-                index_2=-1
-                while index_1 == index_2:
-                    index_1 = random.randint(0,taille_chromsome - 1 )
-                    index_2 = random.randint(0,taille_chromsome - 1)
-                chromosomes[i].chromosome[index_1],chromosomes[i].chromosome[index_2]=chromosomes[i].chromosome[index_2],chromosomes[i].chromosome[index_1]
+        for k in range(2):
+            for i in range(len(chromosomes)):
+                random_value = random.random()
+                if random_value < taux_mutation:
+                    index_1=-1
+                    index_2=-1
+                    while index_1 == index_2:
+                        index_1 = random.randint(0,taille_chromsome - 1 )
+                        index_2 = random.randint(0,taille_chromsome - 1)
+                    chromosomes[i].chromosome[index_1],chromosomes[i].chromosome[index_2]=chromosomes[i].chromosome[index_2],chromosomes[i].chromosome[index_1]
 
 
     def optimize(self):
-        nb_enfant= 4
+        nb_enfant= 2
         self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
         for generation in range(self.nb_generation) :
             self.population.sort()
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
-            if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:    
+            if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:# and self.population.chromosomes[0].is_valid==True:    
                 self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
             parents=self.population.rank_selection_sorted(nb_enfant)
-            childrens = self.croisement_OX(parents)
-            self.mutation(childrens)
+            childrens = self.cx_partially_matched(parents)
+            #childrens=self.croisement_OX(parents)
+            for child in childrens:
+                child.mutation_scramble()
+            #self.mutation(childrens)
             for children in childrens:
                 children.update()
 
@@ -94,6 +121,10 @@ class CVRPTW:
         print(self.population.best_solution)
         self.plotHistory()
         pass
+
+
+
+    
     
 
     def plotHistory(self):
@@ -111,3 +142,23 @@ class CVRPTW:
         # Display the plot
         plt.grid(True)
         plt.show()
+    
+def merge_rules(rules):
+    is_fully_merged = True
+    for round1 in rules:
+        if round1[0] == round1[1]:
+            rules.remove(round1)
+            is_fully_merged = False
+        else:
+            for round2 in rules:
+                if round2[0] == round1[1]:
+                    rules.append((round1[0], round2[1]))
+                    rules.remove(round1)
+                    rules.remove(round2)
+                    is_fully_merged = False
+    return rules, is_fully_merged
+
+
+# liste2 = [[1, 2,3,4,5,6], [6,5,4,3,2,1]]
+# liste2 = cx_partially_matched(liste2)  # Update liste2 with the returned value
+# print(liste2)

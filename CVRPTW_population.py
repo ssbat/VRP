@@ -7,7 +7,7 @@ class Population:
     def __init__(self, nb_generation, info: CVRPTWInfo):
         self.nb_generation=nb_generation
         self.info = info
-        self.population_size = 100
+        self.population_size = 1000
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
         self.fitness_history = dict()
@@ -22,6 +22,7 @@ class Population:
         self.chromosomes=[Chromosome(self.info,random.sample(chromosome_random,len(chromosome_random))) for _ in range(self.population_size)]
 
     def sort(self) :
+       #self.chromosomes.sort(key=lambda chromosome: (not chromosome.is_valid, chromosome.fitness))
         self.chromosomes.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
     
     def roulette_wheel_selection(self,num=2):

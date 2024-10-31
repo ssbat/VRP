@@ -1,3 +1,4 @@
+import random
 from CVRPTW_info import CVRPTWInfo
 from constant import ClientNumber
 
@@ -44,7 +45,7 @@ class Chromosome(object):
 
         
     # To Change
-    def calculFitness(self, w1=0, w2=1.5):
+    def calculFitness(self, w1=0.1, w2=2):
         self.initialize_fitness_variables()
         self.fitnessRoute = []
         for route in self.routes:
@@ -72,9 +73,6 @@ class Chromosome(object):
 
     # Extra
     def chromosome_correction(self):
-        pass
-
-    def mutation(self):
         pass
 
     # route that respect capacity and due time without respecting arrival time
@@ -148,9 +146,30 @@ class Chromosome(object):
         distance: {self.total_travel_distance}\n
         is valid: {self.is_valid}\n
         late time penality: {self.lateTimePen}\n
-        early time penality: {self.earlyTimePen}
+        early time penality: {self.earlyTimePen}\n
+        chromsome:\n
+        {self.chromosome}\n
         routes:\n
         {self.routes}'''
+
+    def mutation_slice_points(self):
+        chromosome_len=len(self.chromosome)
+        slice_point_1 = random.randint(0, chromosome_len - 3)
+        slice_point_2 = random.randint(slice_point_1 + 2, chromosome_len - 1)
+        return slice_point_1, slice_point_2
+
+
+    def mutation_inversion(self) -> list:
+        slice_point_1, slice_point_2 = self.mutation_slice_points()
+        self.chromosome = self.chromosome[:slice_point_1] + list(reversed(self.chromosome[slice_point_1:slice_point_2])) + self.chromosome[slice_point_2:]
+
+
+    def mutation_scramble(self) -> list:
+        slice_point_1, slice_point_2 = self.mutation_slice_points()
+        scrambled = self.chromosome[slice_point_1:slice_point_2]
+        random.shuffle(scrambled)
+        self.chromosome= self.chromosome[:slice_point_1] + scrambled + self.chromosome[slice_point_2:]
+        pass
 
 def pairwise(a: list) -> iter:
     """
