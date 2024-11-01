@@ -95,7 +95,7 @@ class Chromosome(object):
             else:
                 self.move_vehicle(source, 0)
                 self.initialize_new_route()
-                if not self.check_time(0,dest):
+                if  self.check_time(0,dest):
                     self.move_vehicle(0,dest,self.info.distances[0][dest])
         #print(f"{chromosome} => {self.routes}")
         #print()
@@ -192,15 +192,29 @@ def pairwise(a: list) -> iter:
 # Chromosome.set_info_object(info)
 # c=Chromosome()
 
-
-
-
 # #optimum solution => 828
 # c.chromosome=[81, 78, 76, 71, 70, 73, 77, 79, 80, 57, 55, 54, 53, 56, 58, 60, 59, 98, 96, 95, 94, 92, 93, 97, 100, 99, 32, 33, 31, 35, 37, 38, 39, 36, 34, 13, 17, 18, 19, 15, 16, 14, 12, 90, 87, 86, 83, 82, 84, 85, 88, 89, 91, 43, 42, 41, 40, 44, 46, 45, 48, 51, 50, 52, 49, 47, 67, 65, 63, 62, 74, 72, 61, 64, 68, 66, 69, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 75, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]
 # c.decode_chromosome(c.chromosome)
 # c.calculFitness()
 # print(c)
 # pass
+
+
+# #optimum solution => 1650.80
+# instance_name = 'R101'
+# clients_number = ClientNumber.Hundred.value
+# info = CVRPTWInfo(f'instances/{instance_name}.{clients_number}.txt',clients_number)
+# Chromosome.set_info_object(info)
+# c=Chromosome()
+
+# c.chromosome=[2,21,73,41,56,4,5,83,61,85,37,93,14,44,38,43,13,27,69,76,79,3,54,24,80,28,12,40,53,26,30,51,9,66,1,31,88,7,10,33,29,78,34,35,77,36,47,19,8,46,17,39,23,67,55,25,45,82,18,84,60,89,52,6,59,99,94,96,62,11,90,20,32,70,63,64,49,48,65,71,81,50,68,72,75,22,74,58,92,42,15,87,57,97,95,98,16,86,91,100]
+# c.decode_chromosome(c.chromosome)
+# c.calculFitness()
+# print(c)
+# pass
+
+
+
 
 
 
