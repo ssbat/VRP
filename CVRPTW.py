@@ -1,19 +1,22 @@
 import copy
+import pygame
 from CVRPTW_info import CVRPTWInfo
+from CVRPTW_params import *
 from CVRPTW_population import Population
 from CVRPTW_chromosome import Chromosome
 import random
 import matplotlib.pyplot as plt
 
+from Simulation import Interface
+
 
 class CVRPTW:
-    def __init__(self,info: CVRPTWInfo, nb_generation, population_size):
+    def __init__(self,info: CVRPTWInfo):
         self.info = info
         self.best_routes=[]
         self.best_solution = None 
         fitness_history = []
-        self.population = Population(nb_generation, info, population_size)
-        self.nb_generation = nb_generation
+        self.population = Population(info)
         pass
 
 
@@ -99,16 +102,18 @@ class CVRPTW:
     def optimize(self):
         nb_enfant= 2
         self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
-        for generation in range(self.nb_generation) :
+        for generation in range(NB_ITERATIONS) :
             self.population.sort()
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
             if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:# and self.population.chromosomes[0].is_valid==True:    
                 self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
             parents=self.population.rank_selection_sorted(nb_enfant)
-            childrens = self.cx_partially_matched(parents)
+            if random.random()< CX_PROBA:
+                childrens = self.cx_partially_matched(parents)
             #childrens=self.croisement_OX(parents)
             for child in childrens:
-                child.mutation_scramble()
+                if random.random()< MUT_PROBA:
+                    child.mutation_scramble()
             #self.mutation(childrens)
             for children in childrens:
                 children.update()
@@ -120,12 +125,11 @@ class CVRPTW:
             pass
         print(self.population.best_solution)
         self.plotHistory()
+        Interface(self.population.best_solution, True)
+        pygame.display.quit()
+        pygame.quit()
+        quit()
         pass
-
-
-
-    
-    
 
     def plotHistory(self):
         x_values = list(self.population.fitness_history.keys())

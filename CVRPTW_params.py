@@ -1,0 +1,14 @@
+from constant import ClientNumber
+
+
+INSTANCE_NAME= 'R101'
+CLIENTS_NUMBER = ClientNumber.TwentyFive.value
+FULL_INSTANCE_NAME = f'instances/{INSTANCE_NAME}.{CLIENTS_NUMBER}.txt'
+NB_ITERATIONS = 200000
+POPULATION_SIZE = 300
+
+WAIT_COEFF = 0.5
+DELAY_COEFF = 1.5
+
+CX_PROBA = 0.85
+MUT_PROBA = 0.5

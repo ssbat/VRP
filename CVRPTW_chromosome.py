@@ -1,5 +1,6 @@
 import random
 from CVRPTW_info import CVRPTWInfo
+from CVRPTW_params import *
 from constant import ClientNumber
 
 class Chromosome(object):
@@ -42,14 +43,13 @@ class Chromosome(object):
         self.fitness = 0
         self.earlyTimePen = 0
         self.lateTimePen = 0
-        self.travel_distance=0
-        self.total_travel_distance=0
+        self.total_travel_distance = 0
         self.elapsed_time_fitness = 0
         self.is_valid = False
 
         
     # To Change
-    def calculFitness(self, w1=0.1, w2=2):
+    def calculFitness(self, w1=WAIT_COEFF, w2=DELAY_COEFF):
         self.initialize_fitness_variables()
         self.fitnessRoute = []
         for route in self.routes:
@@ -114,18 +114,19 @@ class Chromosome(object):
 
     def calcul_penality_fitness(self, source: int, dest: int):
         self.timeRoute += self.info.distances[source][dest]
+
         # add early time penalty if the vehicle arrives before the ready time
         if self.timeRoute < self.info.ready_times[dest]:
-            self.earlyTimePen += self.info.ready_times[dest] - self.timeRoute
-            self.timeRoute += self.info.ready_times[dest]  - self.timeRoute + self.info.service_times[dest]
-        # add late time penalty if the vehicle arrives after the due date
-        else:
-            if self.timeRoute > self.info.due_dates[dest]:
-                self.lateTimePen += self.timeRoute + self.info.service_times[dest] - self.info.due_dates[dest]
-            self.timeRoute += self.info.service_times[dest]
-            
-                  
+            wait_time = self.info.ready_times[dest] - self.timeRoute
+            self.earlyTimePen += wait_time
+            self.timeRoute += wait_time 
 
+        # add late time penalty if the vehicle arrives after the due date
+        if self.timeRoute > self.info.due_dates[dest]:
+            delay_time = self.timeRoute - self.info.due_dates[dest]
+            self.lateTimePen += delay_time
+        self.timeRoute += self.info.service_times[dest]
+            
     def move_vehicle(self, source: int, dest: int, distance: float=None):
         if distance is None:
             distance = self.info.distances[source][dest]
@@ -185,13 +186,26 @@ def pairwise(a: list) -> iter:
     return zip(a[:-1], a[1:])
 
 
-# instance_name = 'C201'
+# instance_name = 'C101'
 # clients_number = ClientNumber.Hundred.value
 # info = CVRPTWInfo(f'instances/{instance_name}.{clients_number}.txt',clients_number)
-# c=Chromosome(info)
+# Chromosome.set_info_object(info)
+# c=Chromosome()
 
-#optimum solution => 828
+
+
+
+# #optimum solution => 828
 # c.chromosome=[81, 78, 76, 71, 70, 73, 77, 79, 80, 57, 55, 54, 53, 56, 58, 60, 59, 98, 96, 95, 94, 92, 93, 97, 100, 99, 32, 33, 31, 35, 37, 38, 39, 36, 34, 13, 17, 18, 19, 15, 16, 14, 12, 90, 87, 86, 83, 82, 84, 85, 88, 89, 91, 43, 42, 41, 40, 44, 46, 45, 48, 51, 50, 52, 49, 47, 67, 65, 63, 62, 74, 72, 61, 64, 68, 66, 69, 5, 3, 7, 8, 10, 11, 9, 6, 4, 2, 1, 75, 20, 24, 25, 27, 29, 30, 28, 26, 23, 22, 21]
+# c.decode_chromosome(c.chromosome)
+# c.calculFitness()
+# print(c)
+# pass
+
+
+
+
+
 
 #optimum solution => 591
 # c.chromosome=[93,5,75,2,1,99,100,97,92,94,95,98,7,3,4,89,91,88,84,86,83,82,85,76,71,70,73,80,79,81,78,77,96,87,90,67,63,62,74,72,61,64,66,69,68,65,49,55,54,53,56,58,60,59,57,40,44,46,45,51,50,52,47,43,42,41,48,20,22,24,27,30,29,6,32,33,31,35,37,38,39,36,34,28,26,23,18,19,16,14,12,15,17,13,25,9,11,10,8,21]

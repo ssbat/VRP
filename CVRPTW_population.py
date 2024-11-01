@@ -1,13 +1,12 @@
 import random
 from CVRPTW_chromosome import Chromosome
 from CVRPTW_info import CVRPTWInfo
+from CVRPTW_params import *
 
 
 class Population:
-    def __init__(self, nb_generation, info: CVRPTWInfo,population_size):
-        self.nb_generation=nb_generation
+    def __init__(self, info: CVRPTWInfo):
         self.info = info
-        self.population_size = population_size
         self.chromosomes:list[Chromosome]=[]
         self.fitness_sum = 0
         self.fitness_history = dict()
@@ -21,11 +20,11 @@ class Population:
     
     def create_initial_population(self):
         chromosome_random = list(range(1, self.info.clients_number+1))
-        self.chromosomes=[Chromosome(random.sample(chromosome_random,len(chromosome_random))) for _ in range(self.population_size)]
+        self.chromosomes=[Chromosome(random.sample(chromosome_random,len(chromosome_random))) for _ in range(POPULATION_SIZE)]
 
     def sort(self) :
-       #self.chromosomes.sort(key=lambda chromosome: (not chromosome.is_valid, chromosome.fitness))
-        self.chromosomes.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
+       self.chromosomes.sort(key=lambda chromosome: (not chromosome.is_valid, chromosome.fitness))
+       #self.chromosomes.sort(key = lambda chromosome: chromosome.fitness, reverse=False)
     
     def roulette_wheel_selection(self,num=2):
         selected_chromomes=[]
