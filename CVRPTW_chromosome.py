@@ -11,11 +11,11 @@ class Chromosome(object):
         #for 6 clients
         #chromosome exemple [1,4,2,5,7,6,2]
         self.chromosome=chromosome
-
         #decoded chromosome (transorm the chromosome to valid routes)
         # routes=[[1,2,3,4,1],[1,5,6,7]]
         self.routes=[[0]]
         self.decode_chromosome(self.chromosome)
+        self.nb_vehicules=len(self.routes)
         self.calculFitness()
         if Chromosome.info == None:
             print("Warning: Info is None")
@@ -49,7 +49,7 @@ class Chromosome(object):
 
         
     # To Change
-    def calculFitness(self, w1=WAIT_COEFF, w2=DELAY_COEFF):
+    def calculFitness(self, w1=WAIT_COEFF, w2=DELAY_COEFF,w3=NB_VEHICULES_COEFF):
         self.initialize_fitness_variables()
         self.fitnessRoute = []
         for route in self.routes:
@@ -68,7 +68,7 @@ class Chromosome(object):
             self.is_valid = True
         #add time and capacity penalties if the chromosome is incorrect
         
-        self.fitness += w1 * self.earlyTimePen + w2 * self.lateTimePen
+        self.fitness += w1 * self.earlyTimePen + w2 * self.lateTimePen + w3 * self.nb_vehicules
 
         return self.fitness
 
@@ -152,6 +152,7 @@ class Chromosome(object):
         is valid: {self.is_valid}\n
         late time penality: {self.lateTimePen}\n
         early time penality: {self.earlyTimePen}\n
+        number of vehicules: {self.nb_vehicules}\n
         chromsome:\n
         {self.chromosome}\n
         routes:\n
