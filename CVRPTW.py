@@ -125,10 +125,10 @@ class CVRPTW:
             pass
         print(self.population.best_solution)
         self.plotHistory()
-        Interface(self.population.best_solution, True)
+        """Interface(self.population.best_solution, True)
         pygame.display.quit()
         pygame.quit()
-        quit()
+        quit()"""
         pass
 
     def plotHistory(self):
