@@ -49,7 +49,7 @@ class Chromosome(object):
 
         
     # To Change
-    def calculFitness(self, w1=WAIT_COEFF, w2=DELAY_COEFF,w3=NB_VEHICULES_COEFF):
+    def calculFitness(self, w1=AG_WAIT_COEFF, w2=AG_DELAY_COEFF,w3=AG_NB_VEHICULES_COEFF):
         self.initialize_fitness_variables()
         self.fitnessRoute = []
         for route in self.routes:

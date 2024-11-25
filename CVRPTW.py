@@ -102,17 +102,17 @@ class CVRPTW:
     def optimize(self):
         nb_enfant= 2
         self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
-        for generation in range(NB_ITERATIONS) :
+        for generation in range(AG_NB_ITERATIONS) :
             self.population.sort()
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
             if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:# and self.population.chromosomes[0].is_valid==True:    
                 self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
             parents=self.population.rank_selection_sorted(nb_enfant)
-            if random.random()< CX_PROBA:
+            if random.random()< AG_CX_PROBA:
                 childrens = self.cx_partially_matched(parents)
             #childrens=self.croisement_OX(parents)
             for child in childrens:
-                if random.random()< MUT_PROBA:
+                if random.random()< AG_MUT_PROBA:
                     child.mutation_scramble()
             #self.mutation(childrens)
             for children in childrens:
