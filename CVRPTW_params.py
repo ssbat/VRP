@@ -17,7 +17,8 @@ from utils import *
 
 # Constantes pour la méthode tabou
 
-# TABOU_LIST_SIZE_MAX = 10
+# TABOU_SEARCH_ON = True
+TABOU_LIST_SIZE_MAX = 10
 # TABOU_NEIGHBOURHOOD_SIZE = 200
 # TABOU_NB_ITERATIONS = 3000
 
@@ -46,3 +47,5 @@ TABOU_NB_ITERATIONS = parameters.get("TABOU_NB_ITERATIONS", 3000)
 
 # Selected methode
 METHOD = parameters.get("METHOD", "Algorithme Génétique")
+
+CSV_PATH = 'Results/params.csv'
