@@ -9,6 +9,7 @@ class Tabou:
         self.tabou_list = []
         self.neighbourhood = []
         self.chromosomes_history = dict()
+        self.best_chromosome = None
 
     # On définit le voisinage d'un chromosome
     def set_neighbourhood(self) -> None:
@@ -75,8 +76,8 @@ class Tabou:
             self.neighbourhood.clear()
 
         self.plotHistory()
-        best_chromosome = min(self.chromosomes_history.values(), key=lambda chromo: chromo.total_travel_distance)
-        print("Meilleure solution (distance la plus petite) :", best_chromosome)
+        self.best_chromosome = min(self.chromosomes_history.values(), key=lambda chromo: chromo.total_travel_distance)
+        print("Meilleure solution (distance la plus petite) :", self.best_chromosome)
 
     def plotHistory(self):
         x_values = list(self.chromosomes_history.keys())
