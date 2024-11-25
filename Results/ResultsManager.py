@@ -3,7 +3,7 @@ from CVRPTW_params import *
 from CVRPTW_chromosome import Chromosome
 
 class ResultsManager :
-    def __init__(self, ag_best_chromosome : Chromosome, tabou_best_chromosome : Chromosome, csv_path : str) -> None:
+    def __init__(self, ag_best_chromosome : Chromosome, tabou_best_chromosome : Chromosome | None, csv_path : str) -> None:
         self.csv_path = csv_path
         self.params_csv = {
             'instance_name' : INSTANCE_NAME,
@@ -22,16 +22,17 @@ class ResultsManager :
             'ag_early_time_penality_result' : ag_best_chromosome.earlyTimePen,
             'ag_number_of_vehicules_result' : ag_best_chromosome.nb_vehicules,
             'ag_chromosome_result' : ag_best_chromosome.chromosome,
-            'tabou_list_size_max' : TABOU_LIST_SIZE_MAX,
-            'tabou_neighbourdhood_size' : TABOU_NEIGHBOURHOOD_SIZE,
-            'tabou_nb_iterations' : TABOU_NB_ITERATIONS,
-            'tabou_fitness_result' : tabou_best_chromosome.fitness,
-            'tabou_distance_result' : tabou_best_chromosome.total_travel_distance,
-            'tabou_is_valid_result' : tabou_best_chromosome.is_valid,
-            'tabou_late_time_penality_result' : tabou_best_chromosome.lateTimePen,
-            'tabou_early_time_penality_result' : tabou_best_chromosome.earlyTimePen,
-            'tabou_number_of_vehicules_result' : tabou_best_chromosome.nb_vehicules,
-            'tabou_chromosome_result' : tabou_best_chromosome.chromosome,
+            'is_tabou_executed' : TABOU_SEARCH_ON,
+            'tabou_list_size_max' : TABOU_LIST_SIZE_MAX if tabou_best_chromosome else None,
+            'tabou_neighbourdhood_size' : TABOU_NEIGHBOURHOOD_SIZE if tabou_best_chromosome else None,
+            'tabou_nb_iterations' : TABOU_NB_ITERATIONS if tabou_best_chromosome else None,
+            'tabou_fitness_result' : tabou_best_chromosome.fitness if tabou_best_chromosome else None,
+            'tabou_distance_result' : tabou_best_chromosome.total_travel_distance if tabou_best_chromosome else None,
+            'tabou_is_valid_result' : tabou_best_chromosome.is_valid if tabou_best_chromosome else None,
+            'tabou_late_time_penality_result' : tabou_best_chromosome.lateTimePen if tabou_best_chromosome else None,
+            'tabou_early_time_penality_result' : tabou_best_chromosome.earlyTimePen if tabou_best_chromosome else None,
+            'tabou_number_of_vehicules_result' : tabou_best_chromosome.nb_vehicules if tabou_best_chromosome else None,
+            'tabou_chromosome_result' : tabou_best_chromosome.chromosome if tabou_best_chromosome else None,
         }
         
     def save_results_to_csv(self):
