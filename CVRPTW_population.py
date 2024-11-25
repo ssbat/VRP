@@ -20,7 +20,7 @@ class Population:
     
     def create_initial_population(self):
         chromosome_random = list(range(1, self.info.clients_number+1))
-        self.chromosomes=[Chromosome(random.sample(chromosome_random,len(chromosome_random))) for _ in range(POPULATION_SIZE)]
+        self.chromosomes=[Chromosome(random.sample(chromosome_random,len(chromosome_random))) for _ in range(AG_POPULATION_SIZE)]
 
     def sort(self) :
        self.chromosomes.sort(key=lambda chromosome: (not chromosome.is_valid, chromosome.fitness))
