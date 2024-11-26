@@ -116,9 +116,9 @@ delay_coeff_var = tk.StringVar(value=parameters["DELAY_COEFF"])
 nb_vehicules_coeff_var = tk.StringVar(value=parameters["NB_VEHICULES_COEFF"])
 cx_proba_var = tk.StringVar(value=parameters["CX_PROBA"])
 mut_proba_var = tk.StringVar(value=parameters["MUT_PROBA"])
-tabou_list_size_var = tk.StringVar(value=parameters["TABOU_LIST_SIZE_MAX"])
-tabou_neighbourhood_size_var = tk.StringVar(value=parameters["TABOU_NEIGHBOURHOOD_SIZE"])
-tabou_nb_iterations_var = tk.StringVar(value=parameters["TABOU_NB_ITERATIONS"])
+tabou_list_size_var = tk.StringVar(value=parameters.get("TABOU_LIST_SIZE_MAX", 10))
+tabou_neighbourhood_size_var = tk.StringVar(value=parameters.get("TABOU_NEIGHBOURHOOD_SIZE", 200))
+tabou_nb_iterations_var = tk.StringVar(value=parameters.get("TABOU_NB_ITERATIONS", 3000))
 method_choice = tk.StringVar(value=parameters["METHOD"])
 
 
@@ -161,7 +161,7 @@ create_entry(tabou_frame, 1, "Taille Voisinage :", tabou_neighbourhood_size_var)
 create_entry(tabou_frame, 2, "Nombre d'Itérations :", tabou_nb_iterations_var)
 
 # Execution button
-tk.Button(frame, text="Exécuter", command=execute_algorithm, bg=button_bg, fg=button_fg,padx=10, pady=5).grid(row=3, column=0, columnspan=2, pady=10)
+tk.Button(frame, text="Exécuter", command=execute_algorithm, bg=button_bg, fg=button_fg, padx=10, pady=5).grid(row=3, column=0, columnspan=2, pady=10)
 
 # Bottom bar
 footer_frame = tk.Frame(root, pady=5, bg=footer_bg)
