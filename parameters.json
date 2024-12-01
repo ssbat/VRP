@@ -11,5 +11,6 @@
     "TABOU_LIST_SIZE_MAX": 10,
     "TABOU_NEIGHBOURHOOD_SIZE": 200,
     "TABOU_NB_ITERATIONS": 3000,
-    "METHOD": "Algorithme Génétique"
+    "METHOD": "Genetic Alogorithm",
+    "TABOU_SEARCH_ON": false
 }

@@ -34,4 +34,4 @@ images/
 .DS_Store
 .vscode
 
-parameters.json
+# parameters.json

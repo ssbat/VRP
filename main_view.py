@@ -6,6 +6,7 @@ from CVRPTW_info import CVRPTWInfo
 from Tabou import Tabou
 from CVRPTW_params import *
 from utils import *
+from main import *
 
 
 # Algorithms execution function
@@ -21,7 +22,7 @@ def execute_algorithm():
     nb_vehicules_coeff = float(nb_vehicules_coeff_var.get())
     cx_proba = float(cx_proba_var.get())
     mut_proba = float(mut_proba_var.get())
-    if selected_method == "Algo Génétique + Recherche Tabou":
+    if selected_method == "Genetic Alogorithm + Tabou Research":
         tabou_list_size = int(tabou_list_size_var.get())
         tabou_neighbourhood_size = int(tabou_neighbourhood_size_var.get())
         tabou_nb_iterations = int(tabou_nb_iterations_var.get())
@@ -38,14 +39,16 @@ def execute_algorithm():
         "NB_VEHICULES_COEFF": nb_vehicules_coeff,
         "CX_PROBA": cx_proba,
         "MUT_PROBA": mut_proba,
-        "METHOD": selected_method
+        "METHOD": selected_method,
+        "TABOU_SEARCH_ON":False
     }
 
-    if selected_method == "Algo Génétique + Recherche Tabou":
+    if selected_method == "Genetic Alogorithm + Tabou Research":
         parameters.update({
             "TABOU_LIST_SIZE_MAX": tabou_list_size,
             "TABOU_NEIGHBOURHOOD_SIZE": tabou_neighbourhood_size,
-            "TABOU_NB_ITERATIONS": tabou_nb_iterations
+            "TABOU_NB_ITERATIONS": tabou_nb_iterations,
+            "TABOU_SEARCH_ON":True
         })
 
     # Sauvegarder les paramètres dans un fichier JSON
@@ -62,29 +65,15 @@ def execute_algorithm():
     print("----Parameters from file displaying----")
     for key, value in parameters.items():
         print(f"{key}: {value}")
-    
-    # !! Direct use of params from gui
-    #info = CVRPTWInfo(full_instance_name, clients_number)
-    #AG = CVRPTW(info)
-    #AG.optimize()
 
-    #if selected_method == "Algo Génétique + Recherche Tabou":
-    #    TABOU = Tabou(AG.population.best_solution)
-    #    TABOU.optimize()
-
-    # !! Params form parameters.json
-    info = CVRPTWInfo(FULL_INSTANCE_NAME, CLIENTS_NUMBER)
-    AG = CVRPTW(info)
-    AG.optimize()
-    if METHOD == "Algo Génétique + Recherche Tabou":
-        TABOU = Tabou(AG.population.best_solution)
-        TABOU.optimize()
+    # !! Algorithm execution from main
+    main()
     
     print("Execution is end.")
 
 # Funtion to display or not tabou research params
 def toggle_tabou_params(*args):
-    if method_choice.get() == "Algo Génétique + Recherche Tabou":
+    if method_choice.get() == "Genetic Alogorithm + Tabou Research":
         tabou_frame.grid(row=2, column=0, columnspan=2, pady=(10, 0), sticky=tk.W)
     else:
         tabou_frame.grid_forget()
@@ -132,7 +121,7 @@ frame.grid(row=0, column=0, sticky=(tk.W, tk.E))
 ttk.Label(frame, text="Méthode à utiliser : ", background=label_bg).grid(row=0, column=0, sticky=tk.W)
 ttk.Combobox(
     frame, textvariable=method_choice, 
-    values=["Algorithme Génétique", "Algo Génétique + Recherche Tabou"],
+    values=["Genetic Alogorithm", "Genetic Alogorithm + Tabou Research"],
     state="readonly"
 ).grid(row=0, column=1, sticky=tk.W)
 

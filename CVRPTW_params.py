@@ -28,7 +28,6 @@ from utils import *
 
 # Constantes pour la méthode tabou
 
-TABOU_SEARCH_ON = True
 # TABOU_LIST_SIZE_MAX = 10
 # TABOU_NEIGHBOURHOOD_SIZE = 200
 # TABOU_NB_ITERATIONS = 3000
@@ -58,5 +57,7 @@ TABOU_LIST_SIZE_MAX = parameters.get("TABOU_LIST_SIZE_MAX", 10)
 TABOU_NEIGHBOURHOOD_SIZE = parameters.get("TABOU_NEIGHBOURHOOD_SIZE", 200)
 TABOU_NB_ITERATIONS = parameters.get("TABOU_NB_ITERATIONS", 3000)
 
-# Selected methode
-METHOD = parameters.get("METHOD", "Algorithme Génétique")
+# Selected method
+METHOD = parameters.get("METHOD", "Genetic Alogorithm")
+
+TABOU_SEARCH_ON = parameters.get("TABOU_SEARCH_ON", False)
