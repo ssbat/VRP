@@ -13,6 +13,7 @@ from main import *
 def execute_algorithm():
     selected_method = method_choice.get()
     
+    tabou_search_on = False
     instance_name = instance_name_var.get()
     clients_number = int(clients_number_var.get())
     nb_iterations = int(nb_iterations_var.get())
@@ -23,6 +24,7 @@ def execute_algorithm():
     cx_proba = float(cx_proba_var.get())
     mut_proba = float(mut_proba_var.get())
     if selected_method == "Genetic Alogorithm + Tabou Research":
+        tabou_search_on = True
         tabou_list_size = int(tabou_list_size_var.get())
         tabou_neighbourhood_size = int(tabou_neighbourhood_size_var.get())
         tabou_nb_iterations = int(tabou_nb_iterations_var.get())
@@ -32,18 +34,18 @@ def execute_algorithm():
     parameters = {
         "INSTANCE_NAME": instance_name_var.get(),
         "CLIENTS_NUMBER": clients_number,
-        "NB_ITERATIONS": nb_iterations,
-        "POPULATION_SIZE": population_size,
-        "WAIT_COEFF": wait_coeff,
-        "DELAY_COEFF": delay_coeff,
-        "NB_VEHICULES_COEFF": nb_vehicules_coeff,
-        "CX_PROBA": cx_proba,
-        "MUT_PROBA": mut_proba,
+        "AG_NB_ITERATIONS": nb_iterations,
+        "AG_POPULATION_SIZE": population_size,
+        "AG_WAIT_COEFF": wait_coeff,
+        "AG_DELAY_COEFF": delay_coeff,
+        "AG_NB_VEHICULES_COEFF": nb_vehicules_coeff,
+        "AG_CX_PROBA": cx_proba,
+        "AG_MUT_PROBA": mut_proba,
         "METHOD": selected_method,
         "TABOU_SEARCH_ON":False
     }
 
-    if selected_method == "Genetic Alogorithm + Tabou Research":
+    if tabou_search_on == True :
         parameters.update({
             "TABOU_LIST_SIZE_MAX": tabou_list_size,
             "TABOU_NEIGHBOURHOOD_SIZE": tabou_neighbourhood_size,
@@ -59,7 +61,7 @@ def execute_algorithm():
     print(f"Nb Iterations: {nb_iterations}, Population Size: {population_size}")
     print(f"Wait Coeff: {wait_coeff}, Delay Coeff: {delay_coeff}, Vehicle Coeff: {nb_vehicules_coeff}")
     print(f"CX Proba: {cx_proba}, MUT Proba: {mut_proba}")
-    if selected_method == "Algo Génétique + Recherche Tabou":
+    if tabou_search_on == True :
         print(f"Tabou List Size: {tabou_list_size}, Neighbourhood Size: {tabou_neighbourhood_size}, Nb Iterations: {tabou_nb_iterations}")
     print(f"Selected Method: {selected_method}")
     print("----Parameters from file displaying----")
@@ -98,13 +100,13 @@ parameters = load_parameters_from_file()
 # Fields
 instance_name_var = tk.StringVar(value=parameters["INSTANCE_NAME"])
 clients_number_var = tk.StringVar(value=parameters["CLIENTS_NUMBER"])
-nb_iterations_var = tk.StringVar(value=parameters["NB_ITERATIONS"])
-population_size_var = tk.StringVar(value=parameters["POPULATION_SIZE"])
-wait_coeff_var = tk.StringVar(value=parameters["WAIT_COEFF"])
-delay_coeff_var = tk.StringVar(value=parameters["DELAY_COEFF"])
-nb_vehicules_coeff_var = tk.StringVar(value=parameters["NB_VEHICULES_COEFF"])
-cx_proba_var = tk.StringVar(value=parameters["CX_PROBA"])
-mut_proba_var = tk.StringVar(value=parameters["MUT_PROBA"])
+nb_iterations_var = tk.StringVar(value=parameters["AG_NB_ITERATIONS"])
+population_size_var = tk.StringVar(value=parameters["AG_POPULATION_SIZE"])
+wait_coeff_var = tk.StringVar(value=parameters["AG_WAIT_COEFF"])
+delay_coeff_var = tk.StringVar(value=parameters["AG_DELAY_COEFF"])
+nb_vehicules_coeff_var = tk.StringVar(value=parameters["AG_NB_VEHICULES_COEFF"])
+cx_proba_var = tk.StringVar(value=parameters["AG_CX_PROBA"])
+mut_proba_var = tk.StringVar(value=parameters["AG_MUT_PROBA"])
 tabou_list_size_var = tk.StringVar(value=parameters.get("TABOU_LIST_SIZE_MAX", 10))
 tabou_neighbourhood_size_var = tk.StringVar(value=parameters.get("TABOU_NEIGHBOURHOOD_SIZE", 200))
 tabou_nb_iterations_var = tk.StringVar(value=parameters.get("TABOU_NB_ITERATIONS", 3000))

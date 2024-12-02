@@ -42,15 +42,15 @@ INSTANCE_NAME = parameters.get("INSTANCE_NAME", "R101")
 CLIENTS_NUMBER = parameters.get("CLIENTS_NUMBER", ClientNumber.TwentyFive.value)
 FULL_INSTANCE_NAME = f"instances/{INSTANCE_NAME}.{CLIENTS_NUMBER}.txt"
 
-NB_ITERATIONS = parameters.get("NB_ITERATIONS", 5000)
-POPULATION_SIZE = parameters.get("POPULATION_SIZE", 300)
+AG_NB_ITERATIONS = parameters.get("AG_NB_ITERATIONS", 5000)
+AG_POPULATION_SIZE = parameters.get("AG_POPULATION_SIZE", 300)
 
-WAIT_COEFF = parameters.get("WAIT_COEFF", 0.5)
-DELAY_COEFF = parameters.get("DELAY_COEFF", 1.6)
-NB_VEHICULES_COEFF = parameters.get("NB_VEHICULES_COEFF", 50)
+AG_WAIT_COEFF = parameters.get("AG_WAIT_COEFF", 0.5)
+AG_DELAY_COEFF = parameters.get("AG_DELAY_COEFF", 1.6)
+AG_NB_VEHICULES_COEFF = parameters.get("AG_NB_VEHICULES_COEFF", 50)
 
-CX_PROBA = parameters.get("CX_PROBA", 0.85)
-MUT_PROBA = parameters.get("MUT_PROBA", 0.5)
+AG_CX_PROBA = parameters.get("AG_CX_PROBA", 0.85)
+AG_MUT_PROBA = parameters.get("AG_MUT_PROBA", 0.5)
 
 # Tabou research parameters
 TABOU_LIST_SIZE_MAX = parameters.get("TABOU_LIST_SIZE_MAX", 10)
