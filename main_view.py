@@ -92,20 +92,15 @@ class AlgorithmConfigurator:
         self.add_entry(self.tabou_frame, "Taille Voisinage :", self.tabou_neighbourhood_size_var, 1, 0)
         self.add_entry(self.tabou_frame, "Nombre d'Itérations :", self.tabou_nb_iterations_var, 2, 0)
 
-        # Execute Button
-        ttk.Button(
-            config_frame, text="Exécuter", command=self.execute_algorithm
-        ).place(x=200,y=620)
         # "Go to Frame 2" Button
         ttk.Button(
             config_frame, text="Go to Frame 2", command=self.show_second_frame
-        ).place(x=50,y=620)
-        
-        # "Go to Frame 2" Button
+        ).grid(row=4, column=0, pady=20, padx=10, sticky="w")
+    
+        # Execute Button
         ttk.Button(
-            config_frame, text="test", command=self.show_second_frame
-        ).grid(row=4, column=1, pady=20, padx=10)  # Positioned beside "Exécuter"
-        
+            config_frame, text="Exécuter", command=self.execute_algorithm
+        ).grid(row=4, column=0, pady=20, padx=10, sticky="e")
         self.toggle_tabou_params()
 
         # Image Frame
