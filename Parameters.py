@@ -49,6 +49,12 @@ class Parameters:
             default_value = "Genetic Alogorithm"
         if key == "TABOU_SEARCH_ON":
             default_value = False
+        if key == "TABOU_LIST_SIZE_MAX":
+            default_value = 10
+        if key == "TABOU_NEIGHBOURHOOD_SIZE":
+            default_value = 200
+        if key == "TABOU_NB_ITERATIONS":
+            default_value = 3000
         if key != "FULL_INSTANCE_NAME":
             return Parameters._data.get(key, default_value)
         else :
