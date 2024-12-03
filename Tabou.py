@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from CVRPTW_params import *
 import random
 
+from Parameters import Parameters
+
 class Tabou:
     def __init__(self, chromosome: Chromosome) -> None:
         self.chromosome = chromosome
@@ -13,7 +15,7 @@ class Tabou:
 
     # On définit le voisinage d'un chromosome
     def set_neighbourhood(self) -> None:
-        for _ in range(TABOU_NEIGHBOURHOOD_SIZE):
+        for _ in range(Parameters.get(TABOU_NEIGHBOURHOOD_SIZE)):
             copy_chromosome = self.chromosome.chromosome.copy()
             neighbour_chromosome = self.get_valid_neighbour(copy_chromosome)
             self.neighbourhood.append(neighbour_chromosome)
@@ -56,7 +58,7 @@ class Tabou:
       
     # Fonction principale
     def optimize(self):
-        for generation in range(TABOU_NB_ITERATIONS):
+        for generation in range(Parameters.get(TABOU_NB_ITERATIONS)):
             self.set_neighbourhood()
 
             self.neighbourhood = [Chromosome(chromosome) for chromosome in self.neighbourhood]
@@ -66,7 +68,7 @@ class Tabou:
             best_neighbour = min(valid_neighbours, key=lambda chromosome: chromosome.fitness, default=None)
 
             if best_neighbour :
-                if len(self.tabou_list) >= TABOU_LIST_SIZE_MAX:
+                if len(self.tabou_list) >= Parameters.get(TABOU_LIST_SIZE_MAX):
                     self.tabou_list.pop(0)
                 self.tabou_list.append(self.chromosome.chromosome.copy())
                 self.chromosome = best_neighbour

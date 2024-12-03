@@ -28,8 +28,11 @@
 *.out
 *.app
 *.pyc
-images/
 
 
 .DS_Store
 .vscode
+
+Results/params.csv
+
+# parameters.json

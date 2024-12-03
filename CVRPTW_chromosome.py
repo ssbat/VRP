@@ -1,6 +1,7 @@
 import random
 from CVRPTW_info import CVRPTWInfo
 from CVRPTW_params import *
+from Parameters import Parameters
 from constant import ClientNumber
 
 class Chromosome(object):
@@ -49,7 +50,7 @@ class Chromosome(object):
 
         
     # To Change
-    def calculFitness(self, w1=AG_WAIT_COEFF, w2=AG_DELAY_COEFF,w3=AG_NB_VEHICULES_COEFF):
+    def calculFitness(self, w1=Parameters.get(AG_WAIT_COEFF), w2=Parameters.get(AG_DELAY_COEFF),w3=Parameters.get(AG_NB_VEHICULES_COEFF)):
         self.initialize_fitness_variables()
         self.fitnessRoute = []
         for route in self.routes:
@@ -97,6 +98,7 @@ class Chromosome(object):
                 self.initialize_new_route()
                 if  self.check_time(0,dest):
                     self.move_vehicle(0,dest,self.info.distances[0][dest])
+        self.nb_vehicules=len(self.routes)
         #print(f"{chromosome} => {self.routes}")
         #print()
 
@@ -199,6 +201,19 @@ def pairwise(a: list) -> iter:
 # c.calculFitness()
 # print(c)
 # pass
+
+
+# instance_name = 'R101'
+# clients_number = ClientNumber.TwentyFive.value
+# info = CVRPTWInfo(f'instances/{instance_name}.{clients_number}.txt',clients_number)
+# Chromosome.set_info_object(info)
+# c=Chromosome()
+
+# #optimum solution => 811
+# c.chromosome=[16, 17, 23, 22, 24, 21, 14, 7, 8, 12, 9, 3, 13, 11, 19, 20, 2, 5, 10, 1, 15, 6, 4, 25, 18]
+# c.decode_chromosome(c.chromosome)
+# c.calculFitness()
+
 
 
 # #optimum solution => 1650.80
