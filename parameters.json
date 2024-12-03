@@ -11,6 +11,6 @@
     "METHOD": "Genetic Algorithm + Tabou Research",
     "TABOU_LIST_SIZE_MAX": 10,
     "TABOU_NEIGHBOURHOOD_SIZE": 200,
-    "TABOU_NB_ITERATIONS": 30000,
+    "TABOU_NB_ITERATIONS": 3000,
     "TABOU_SEARCH_ON": true
 }

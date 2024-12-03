@@ -9,6 +9,7 @@ from CVRPTW_params import *
 from utils import *
 from main import *
 from PIL import Image, ImageTk
+from second_frame import SecondFrame
 
 class AlgorithmConfigurator:
     def __init__(self, root):
@@ -43,12 +44,17 @@ class AlgorithmConfigurator:
             self.tabou_list_size_var = tk.StringVar(value=Parameters.get("TABOU_LIST_SIZE_MAX"))
             self.tabou_neighbourhood_size_var = tk.StringVar(value=Parameters.get("TABOU_NEIGHBOURHOOD_SIZE"))
             self.tabou_nb_iterations_var = tk.StringVar(value=Parameters.get("TABOU_NB_ITERATIONS"))
-
     def create_widgets(self):
-        main_frame=ttk.Frame(self.root,width=600)
-        main_frame.place(x=0,y=0)
+        main_frame = ttk.Frame(self.root, width=1000, height=700)
+        main_frame.place(x=0, y=0)
+        self.main_frame = main_frame  # Keep reference for toggling
+        
+        # Configuration Frame
+        config_frame = ttk.Frame(main_frame, width=600)
+        config_frame.place(x=0, y=0)
+        
         # Header
-        header_frame = ttk.Frame(main_frame)
+        header_frame = ttk.Frame(config_frame)
         header_frame.grid(row=0, column=0, pady=10, padx=10, sticky="ew")
         ttk.Label(
             header_frame, text="Configuration des Paramètres des Algorithmes", 
@@ -56,7 +62,7 @@ class AlgorithmConfigurator:
         ).grid(row=0, column=0)
 
         # Method Selection
-        method_frame = ttk.Frame(main_frame)
+        method_frame = ttk.Frame(config_frame)
         method_frame.grid(row=1, column=0, pady=10, padx=20, sticky="w")
         ttk.Label(method_frame, text="Méthode à utiliser :").grid(row=0, column=0, sticky="w", padx=5)
         ttk.Combobox(
@@ -64,12 +70,12 @@ class AlgorithmConfigurator:
             textvariable=self.method_choice,
             state="readonly",
             values=["Genetic Algorithm", "Genetic Algorithm + Tabou Research"],
-            width=40  # Adjust width as needed
+            width=40
         ).grid(row=0, column=1, padx=5, sticky="ew", columnspan=2)
         self.method_choice.trace_add("write", self.toggle_tabou_params)
 
         # General Parameters Frame
-        general_frame = self.create_label_frame(main_frame,"Paramètres Généraux", 2)
+        general_frame = self.create_label_frame(config_frame, "Paramètres Généraux", 2)
         self.add_entry(general_frame, "Nom de l'Instance :", self.instance_name_var, 0, 0)
         self.add_entry(general_frame, "Nombre de Clients :", self.clients_number_var, 1, 0)
         self.add_entry(general_frame, "Nombre d'Itérations :", self.nb_iterations_var, 2, 0)
@@ -81,24 +87,33 @@ class AlgorithmConfigurator:
         self.add_entry(general_frame, "Taux de Mutation :", self.mut_proba_var, 8, 0)
 
         # Tabou Parameters Frame
-        self.tabou_frame = self.create_label_frame(main_frame,"Paramètres Recherche Tabou", 3)
+        self.tabou_frame = self.create_label_frame(config_frame, "Paramètres Recherche Tabou", 3)
         self.add_entry(self.tabou_frame, "Taille Max Liste Tabou :", self.tabou_list_size_var, 0, 0)
         self.add_entry(self.tabou_frame, "Taille Voisinage :", self.tabou_neighbourhood_size_var, 1, 0)
         self.add_entry(self.tabou_frame, "Nombre d'Itérations :", self.tabou_nb_iterations_var, 2, 0)
 
         # Execute Button
         ttk.Button(
-            main_frame, text="Exécuter", command=self.execute_algorithm
-        ).grid(row=4, column=0, pady=20, padx=20)
-
+            config_frame, text="Exécuter", command=self.execute_algorithm
+        ).place(x=200,y=620)
+        # "Go to Frame 2" Button
+        ttk.Button(
+            config_frame, text="Go to Frame 2", command=self.show_second_frame
+        ).place(x=50,y=620)
+        
+        # "Go to Frame 2" Button
+        ttk.Button(
+            config_frame, text="test", command=self.show_second_frame
+        ).grid(row=4, column=1, pady=20, padx=10)  # Positioned beside "Exécuter"
+        
         self.toggle_tabou_params()
 
-
-        second_frame = ttk.Frame(root)
-        second_frame.place(height=700, width=400, x=500, y=0)
+        # Image Frame
+        self.image_frame = ttk.Frame(main_frame)
+        self.image_frame.place(height=700, width=400, x=500, y=0)  # Corrected x-position
         image = Image.open("images/CVRPTW2.png")
         self.photo = ImageTk.PhotoImage(image)
-        self.image_label = tk.Label(second_frame, image=self.photo, borderwidth=0)
+        self.image_label = tk.Label(self.image_frame, image=self.photo, borderwidth=0)
         self.image_label.place(x=0, y=100)
 
 
@@ -106,6 +121,9 @@ class AlgorithmConfigurator:
         frame = ttk.LabelFrame(frame, text=text, padding=(10, 10))
         frame.grid(row=row, column=0, pady=10, padx=20, sticky="ew")
         return frame
+    def show_second_frame(self):
+        self.main_frame.place_forget()  # Hide current frame
+        SecondFrame(self.root, self.main_frame)  # Create and show second frame
 
     def add_entry(self, parent, label, variable, row, column):
         ttk.Label(parent, text=label).grid(row=row, column=column, sticky="w")
