@@ -14,6 +14,11 @@ def main():
     tabou_best_chromosome = None
 
     if Parameters.get(TABOU_SEARCH_ON) and AG.population.best_solution.is_valid:
+        
+        print("\n*************************")
+        print("Taboo is besing executed")
+        print("************************")
+
         TABOU = Tabou(AG.population.best_solution)
         TABOU.optimize()
         tabou_best_chromosome = TABOU.best_chromosome

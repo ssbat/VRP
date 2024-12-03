@@ -1,13 +1,16 @@
 {
     "INSTANCE_NAME": "R101",
     "CLIENTS_NUMBER": 25,
-    "AG_NB_ITERATIONS": 100000,
+    "AG_NB_ITERATIONS": 10000,
     "AG_POPULATION_SIZE": 300,
     "AG_WAIT_COEFF": 0.5,
-    "AG_DELAY_COEFF": 1.6,
+    "AG_DELAY_COEFF": 9.0,
     "AG_NB_VEHICULES_COEFF": 50.0,
     "AG_CX_PROBA": 0.85,
-    "AG_MUT_PROBA": 0.5,
-    "METHOD": "Genetic Alogorithm",
-    "TABOU_SEARCH_ON": false
+    "AG_MUT_PROBA": 0.4,
+    "METHOD": "Genetic Alogorithm + Tabou Research",
+    "TABOU_SEARCH_ON": true,
+    "TABOU_LIST_SIZE_MAX": 5,
+    "TABOU_NEIGHBOURHOOD_SIZE": 200,
+    "TABOU_NB_ITERATIONS": 3000
 }

@@ -58,4 +58,4 @@ class Parameters:
         if key != "FULL_INSTANCE_NAME":
             return Parameters._data.get(key, default_value)
         else :
-            return f"instances/{Parameters._data.get("INSTANCE_NAME", "R101")}.{Parameters._data.get("CLIENTS_NUMBER", 25)}.txt"
+            return "instances/"+ str(Parameters._data.get("INSTANCE_NAME", "R101"))+"."+str(Parameters._data.get("CLIENTS_NUMBER", 25))+".txt"
