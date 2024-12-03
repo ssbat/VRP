@@ -32,32 +32,57 @@ from utils import *
 # TABOU_NEIGHBOURHOOD_SIZE = 200
 # TABOU_NB_ITERATIONS = 3000
 
+# Paths params
 CSV_PATH = 'Results/params.csv'
+PARAMETERS_PATH = "parameters.json"
+
+# General parameters
+INSTANCE_NAME = "INSTANCE_NAME"
+CLIENTS_NUMBER = "CLIENTS_NUMBER"
+FULL_INSTANCE_NAME = "FULL_INSTANCE_NAME"
+
+# GA parameters
+AG_NB_ITERATIONS =  "AG_NB_ITERATIONS"
+AG_POPULATION_SIZE = "AG_POPULATION_SIZE"
+AG_WAIT_COEFF = "AG_WAIT_COEFF"
+AG_DELAY_COEFF = "AG_DELAY_COEFF"
+AG_NB_VEHICULES_COEFF = "AG_NB_VEHICULES_COEFF"
+AG_CX_PROBA = "AG_CX_PROBA"
+AG_MUT_PROBA = "AG_MUT_PROBA"
+
+# Tabou research parameters
+TABOU_LIST_SIZE_MAX = "TABOU_LIST_SIZE_MAX"
+TABOU_NEIGHBOURHOOD_SIZE = "TABOU_NEIGHBOURHOOD_SIZE"
+TABOU_NB_ITERATIONS = "TABOU_NB_ITERATIONS"
+
+# Selected method
+METHOD = "METHOD"
+TABOU_SEARCH_ON = "TABOU_SEARCH_ON"
 
 
 # !! Load params from JSON file
-parameters = load_parameters_from_file()
+# parameters = ParametersManager(PARAMETERS_PATH)
 
-INSTANCE_NAME = parameters.get("INSTANCE_NAME", "R101")
-CLIENTS_NUMBER = parameters.get("CLIENTS_NUMBER", ClientNumber.TwentyFive.value)
-FULL_INSTANCE_NAME = f"instances/{INSTANCE_NAME}.{CLIENTS_NUMBER}.txt"
+#INSTANCE_NAME = get_parameter("INSTANCE_NAME", "R101")
+#CLIENTS_NUMBER = get_parameter("CLIENTS_NUMBER", ClientNumber.TwentyFive.value)
+#FULL_INSTANCE_NAME = f"instances/{INSTANCE_NAME}.{CLIENTS_NUMBER}.txt"
 
-AG_NB_ITERATIONS = parameters.get("AG_NB_ITERATIONS", 5000)
-AG_POPULATION_SIZE = parameters.get("AG_POPULATION_SIZE", 300)
+#AG_NB_ITERATIONS =  5000
+#AG_POPULATION_SIZE = get_parameter("AG_POPULATION_SIZE", 300)
 
-AG_WAIT_COEFF = parameters.get("AG_WAIT_COEFF", 0.5)
-AG_DELAY_COEFF = parameters.get("AG_DELAY_COEFF", 1.6)
-AG_NB_VEHICULES_COEFF = parameters.get("AG_NB_VEHICULES_COEFF", 50)
+#AG_WAIT_COEFF = get_parameter("AG_WAIT_COEFF", 0.5)
+#AG_DELAY_COEFF = get_parameter("AG_DELAY_COEFF", 1.6)
+#AG_NB_VEHICULES_COEFF = get_parameter("AG_NB_VEHICULES_COEFF", 50)
 
-AG_CX_PROBA = parameters.get("AG_CX_PROBA", 0.85)
-AG_MUT_PROBA = parameters.get("AG_MUT_PROBA", 0.5)
+#AG_CX_PROBA = get_parameter("AG_CX_PROBA", 0.85)
+#AG_MUT_PROBA = get_parameter("AG_MUT_PROBA", 0.5)
 
 # Tabou research parameters
-TABOU_LIST_SIZE_MAX = parameters.get("TABOU_LIST_SIZE_MAX", 10)
-TABOU_NEIGHBOURHOOD_SIZE = parameters.get("TABOU_NEIGHBOURHOOD_SIZE", 200)
-TABOU_NB_ITERATIONS = parameters.get("TABOU_NB_ITERATIONS", 3000)
+#TABOU_LIST_SIZE_MAX = get_parameter("TABOU_LIST_SIZE_MAX", 10)
+#TABOU_NEIGHBOURHOOD_SIZE = get_parameter("TABOU_NEIGHBOURHOOD_SIZE", 200)
+#TABOU_NB_ITERATIONS = get_parameter("TABOU_NB_ITERATIONS", 3000)
 
 # Selected method
-METHOD = parameters.get("METHOD", "Genetic Alogorithm")
+#METHOD = get_parameter("METHOD", "Genetic Alogorithm")
 
-TABOU_SEARCH_ON = parameters.get("TABOU_SEARCH_ON", False)
+#TABOU_SEARCH_ON = get_parameter("TABOU_SEARCH_ON", False)

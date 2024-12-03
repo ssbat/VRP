@@ -23,3 +23,12 @@ def save_parameters_to_file(parameters, file_path="parameters.json"):
     with open(file_path, 'w') as file:
         json.dump(parameters, file, indent=4)
     print(f"Paramètres enregistrés dans {file_path}")
+
+def get_parameter(key, default_value=None):
+    """
+    Recharge le fichier JSON et retourne la valeur du paramètre spécifié.
+    Si le paramètre n'existe pas, retourne la valeur par défaut.
+    """
+    with open("parameters.json", "r") as file:
+        parameters = json.load(file)
+    return parameters.get(key, default_value)

@@ -3,6 +3,7 @@ import json
 from tkinter import ttk
 from CVRPTW import CVRPTW
 from CVRPTW_info import CVRPTWInfo
+import CVRPTW_params
 from Tabou import Tabou
 from CVRPTW_params import *
 from utils import *
@@ -95,22 +96,22 @@ button_fg = "#000000"        # Couleur du texte des boutons
 footer_bg = "#3f51b5"        # Fond de la barre des développeurs
 footer_fg = "#ffffff"        # Couleur du texte de la barre des développeurs
 
-parameters = load_parameters_from_file()
+#parameters = load_parameters_from_file()
 
 # Fields
-instance_name_var = tk.StringVar(value=parameters["INSTANCE_NAME"])
-clients_number_var = tk.StringVar(value=parameters["CLIENTS_NUMBER"])
-nb_iterations_var = tk.StringVar(value=parameters["AG_NB_ITERATIONS"])
-population_size_var = tk.StringVar(value=parameters["AG_POPULATION_SIZE"])
-wait_coeff_var = tk.StringVar(value=parameters["AG_WAIT_COEFF"])
-delay_coeff_var = tk.StringVar(value=parameters["AG_DELAY_COEFF"])
-nb_vehicules_coeff_var = tk.StringVar(value=parameters["AG_NB_VEHICULES_COEFF"])
-cx_proba_var = tk.StringVar(value=parameters["AG_CX_PROBA"])
-mut_proba_var = tk.StringVar(value=parameters["AG_MUT_PROBA"])
-tabou_list_size_var = tk.StringVar(value=parameters.get("TABOU_LIST_SIZE_MAX", 10))
-tabou_neighbourhood_size_var = tk.StringVar(value=parameters.get("TABOU_NEIGHBOURHOOD_SIZE", 200))
-tabou_nb_iterations_var = tk.StringVar(value=parameters.get("TABOU_NB_ITERATIONS", 3000))
-method_choice = tk.StringVar(value=parameters["METHOD"])
+instance_name_var = tk.StringVar(value=Parameters.get(INSTANCE_NAME))
+clients_number_var = tk.StringVar(value=Parameters.get(CLIENTS_NUMBER))
+nb_iterations_var = tk.StringVar(value=Parameters.get(AG_NB_ITERATIONS))
+population_size_var = tk.StringVar(value=Parameters.get(AG_POPULATION_SIZE))
+wait_coeff_var = tk.StringVar(value=Parameters.get(AG_WAIT_COEFF))
+delay_coeff_var = tk.StringVar(value=Parameters.get(AG_DELAY_COEFF))
+nb_vehicules_coeff_var = tk.StringVar(value=Parameters.get(AG_NB_VEHICULES_COEFF))
+cx_proba_var = tk.StringVar(value=Parameters.get(AG_CX_PROBA))
+mut_proba_var = tk.StringVar(value=Parameters.get(AG_MUT_PROBA))
+tabou_list_size_var = tk.StringVar(value=Parameters.get(TABOU_LIST_SIZE_MAX))
+tabou_neighbourhood_size_var = tk.StringVar(value=Parameters.get(TABOU_NEIGHBOURHOOD_SIZE))
+tabou_nb_iterations_var = tk.StringVar(value=Parameters.get(TABOU_NB_ITERATIONS))
+method_choice = tk.StringVar(value=Parameters.get(METHOD))
 
 
 method_choice.trace_add("write", toggle_tabou_params)
