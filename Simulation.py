@@ -347,3 +347,21 @@ class Truck:
 # pygame.display.quit()
 # pygame.quit()
 # quit()
+
+# instance_name = 'R101'
+# clients_number = ClientNumber.TwentyFive.value
+# info = CVRPTWInfo(f'instances/{instance_name}.{clients_number}.txt',clients_number)
+# Chromosome.set_info_object(info)
+# c=Chromosome()
+
+# #optimum solution => 818
+# c.chromosome=[14, 15, 13, 7, 8, 17, 12, 9, 20, 1, 5, 16, 6, 11, 19, 10, 23, 22, 4, 2, 21, 3, 24, 25, 18]
+# c.decode_chromosome(c.chromosome)
+# c.calculFitness()
+# print(c)
+# Interface(c, True)
+# pass
+
+# pygame.display.quit()
+# pygame.quit()
+# quit()

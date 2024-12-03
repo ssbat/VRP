@@ -1,6 +1,6 @@
 import tkinter as tk
 import json
-from tkinter import ttk
+from tkinter import  ttk
 from CVRPTW import CVRPTW
 from CVRPTW_info import CVRPTWInfo
 import CVRPTW_params
@@ -8,159 +8,144 @@ from Tabou import Tabou
 from CVRPTW_params import *
 from utils import *
 from main import *
+from PIL import Image, ImageTk
+
+class AlgorithmConfigurator:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Configuration des Paramètres des Algorithmes")
+        self.root.geometry("1000x700")
+        self.create_styles()
+        self.create_variables()
+        self.create_widgets()
+
+    def create_styles(self):
+        self.style = ttk.Style()
+        self.style.configure("TLabel", font=("Arial", 12), padding=5)
+        self.style.configure("TEntry", font=("Arial", 12), padding=5)
+        self.style.configure("TButton", font=("Arial", 12, "bold"), padding=5)
+        self.style.configure("TCombobox", font=("Arial", 12), padding=5)
+        self.style.configure("TFrame", background="#f3f4f6")
+        self.root.configure(bg="#f3f4f6")
+
+    def create_variables(self):
+            self.method_choice = tk.StringVar(value=Parameters.get("METHOD"))
+            # Variables
+            self.instance_name_var = tk.StringVar(value=Parameters.get("INSTANCE_NAME"))
+            self.clients_number_var = tk.StringVar(value=Parameters.get("CLIENTS_NUMBER"))
+            self.nb_iterations_var = tk.StringVar(value=Parameters.get("AG_NB_ITERATIONS"))
+            self.population_size_var = tk.StringVar(value=Parameters.get("AG_POPULATION_SIZE"))
+            self.wait_coeff_var = tk.StringVar(value=Parameters.get("AG_WAIT_COEFF"))
+            self.delay_coeff_var = tk.StringVar(value=Parameters.get("AG_DELAY_COEFF"))
+            self.nb_vehicules_coeff_var = tk.StringVar(value=Parameters.get("AG_NB_VEHICULES_COEFF"))
+            self.cx_proba_var = tk.StringVar(value=Parameters.get("AG_CX_PROBA"))
+            self.mut_proba_var = tk.StringVar(value=Parameters.get("AG_MUT_PROBA"))
+            self.tabou_list_size_var = tk.StringVar(value=Parameters.get("TABOU_LIST_SIZE_MAX"))
+            self.tabou_neighbourhood_size_var = tk.StringVar(value=Parameters.get("TABOU_NEIGHBOURHOOD_SIZE"))
+            self.tabou_nb_iterations_var = tk.StringVar(value=Parameters.get("TABOU_NB_ITERATIONS"))
+
+    def create_widgets(self):
+        main_frame=ttk.Frame(self.root,width=600)
+        main_frame.place(x=0,y=0)
+        # Header
+        header_frame = ttk.Frame(main_frame)
+        header_frame.grid(row=0, column=0, pady=10, padx=10, sticky="ew")
+        ttk.Label(
+            header_frame, text="Configuration des Paramètres des Algorithmes", 
+            font=("Arial", 16, "bold"), anchor="center"
+        ).grid(row=0, column=0)
+
+        # Method Selection
+        method_frame = ttk.Frame(main_frame)
+        method_frame.grid(row=1, column=0, pady=10, padx=20, sticky="w")
+        ttk.Label(method_frame, text="Méthode à utiliser :").grid(row=0, column=0, sticky="w", padx=5)
+        ttk.Combobox(
+            method_frame,
+            textvariable=self.method_choice,
+            state="readonly",
+            values=["Genetic Algorithm", "Genetic Algorithm + Tabou Research"],
+            width=40  # Adjust width as needed
+        ).grid(row=0, column=1, padx=5, sticky="ew", columnspan=2)
+        self.method_choice.trace_add("write", self.toggle_tabou_params)
+
+        # General Parameters Frame
+        general_frame = self.create_label_frame(main_frame,"Paramètres Généraux", 2)
+        self.add_entry(general_frame, "Nom de l'Instance :", self.instance_name_var, 0, 0)
+        self.add_entry(general_frame, "Nombre de Clients :", self.clients_number_var, 1, 0)
+        self.add_entry(general_frame, "Nombre d'Itérations :", self.nb_iterations_var, 2, 0)
+        self.add_entry(general_frame, "Taille de la Population :", self.population_size_var, 3, 0)
+        self.add_entry(general_frame, "Coeff. d'Attente :", self.wait_coeff_var, 4, 0)
+        self.add_entry(general_frame, "Coeff. de Délai :", self.delay_coeff_var, 5, 0)
+        self.add_entry(general_frame, "Coeff. Véhicules :", self.nb_vehicules_coeff_var, 6, 0)
+        self.add_entry(general_frame, "Taux de Croisement :", self.cx_proba_var, 7, 0)
+        self.add_entry(general_frame, "Taux de Mutation :", self.mut_proba_var, 8, 0)
+
+        # Tabou Parameters Frame
+        self.tabou_frame = self.create_label_frame(main_frame,"Paramètres Recherche Tabou", 3)
+        self.add_entry(self.tabou_frame, "Taille Max Liste Tabou :", self.tabou_list_size_var, 0, 0)
+        self.add_entry(self.tabou_frame, "Taille Voisinage :", self.tabou_neighbourhood_size_var, 1, 0)
+        self.add_entry(self.tabou_frame, "Nombre d'Itérations :", self.tabou_nb_iterations_var, 2, 0)
+
+        # Execute Button
+        ttk.Button(
+            main_frame, text="Exécuter", command=self.execute_algorithm
+        ).grid(row=4, column=0, pady=20, padx=20)
+
+        self.toggle_tabou_params()
 
 
-# Algorithms execution function
-def execute_algorithm():
-    selected_method = method_choice.get()
-    
-    tabou_search_on = False
-    instance_name = instance_name_var.get()
-    clients_number = int(clients_number_var.get())
-    nb_iterations = int(nb_iterations_var.get())
-    population_size = int(population_size_var.get())
-    wait_coeff = float(wait_coeff_var.get())
-    delay_coeff = float(delay_coeff_var.get())
-    nb_vehicules_coeff = float(nb_vehicules_coeff_var.get())
-    cx_proba = float(cx_proba_var.get())
-    mut_proba = float(mut_proba_var.get())
-    if selected_method == "Genetic Alogorithm + Tabou Research":
-        tabou_search_on = True
-        tabou_list_size = int(tabou_list_size_var.get())
-        tabou_neighbourhood_size = int(tabou_neighbourhood_size_var.get())
-        tabou_nb_iterations = int(tabou_nb_iterations_var.get())
-
-    full_instance_name = f'instances/{instance_name}.{clients_number}.txt'
-
-    parameters = {
-        "INSTANCE_NAME": instance_name_var.get(),
-        "CLIENTS_NUMBER": clients_number,
-        "AG_NB_ITERATIONS": nb_iterations,
-        "AG_POPULATION_SIZE": population_size,
-        "AG_WAIT_COEFF": wait_coeff,
-        "AG_DELAY_COEFF": delay_coeff,
-        "AG_NB_VEHICULES_COEFF": nb_vehicules_coeff,
-        "AG_CX_PROBA": cx_proba,
-        "AG_MUT_PROBA": mut_proba,
-        "METHOD": selected_method,
-        "TABOU_SEARCH_ON":False
-    }
-
-    if tabou_search_on == True :
-        parameters.update({
-            "TABOU_LIST_SIZE_MAX": tabou_list_size,
-            "TABOU_NEIGHBOURHOOD_SIZE": tabou_neighbourhood_size,
-            "TABOU_NB_ITERATIONS": tabou_nb_iterations,
-            "TABOU_SEARCH_ON":True
-        })
-
-    # Sauvegarder les paramètres dans un fichier JSON
-    save_parameters_to_file(parameters)
-    
-    # Printing for log
-    print(f"Instance: {instance_name}, Clients: {clients_number}")
-    print(f"Nb Iterations: {nb_iterations}, Population Size: {population_size}")
-    print(f"Wait Coeff: {wait_coeff}, Delay Coeff: {delay_coeff}, Vehicle Coeff: {nb_vehicules_coeff}")
-    print(f"CX Proba: {cx_proba}, MUT Proba: {mut_proba}")
-    if tabou_search_on == True :
-        print(f"Tabou List Size: {tabou_list_size}, Neighbourhood Size: {tabou_neighbourhood_size}, Nb Iterations: {tabou_nb_iterations}")
-    print(f"Selected Method: {selected_method}")
-    print("----Parameters from file displaying----")
-    for key, value in parameters.items():
-        print(f"{key}: {value}")
-
-    # !! Algorithm execution from main
-    main()
-    
-    print("Execution is end.")
-
-# Funtion to display or not tabou research params
-def toggle_tabou_params(*args):
-    if method_choice.get() == "Genetic Alogorithm + Tabou Research":
-        tabou_frame.grid(row=2, column=0, columnspan=2, pady=(10, 0), sticky=tk.W)
-    else:
-        tabou_frame.grid_forget()
+        second_frame = ttk.Frame(root)
+        second_frame.place(height=700, width=400, x=500, y=0)
+        image = Image.open("images/CVRPTW2.png")
+        self.photo = ImageTk.PhotoImage(image)
+        self.image_label = tk.Label(second_frame, image=self.photo, borderwidth=0)
+        self.image_label.place(x=0, y=100)
 
 
-# GUI
-root = tk.Tk()
-root.title("Configuration des Paramètres des Algorithmes")
+    def create_label_frame(self,frame, text, row):
+        frame = ttk.LabelFrame(frame, text=text, padding=(10, 10))
+        frame.grid(row=row, column=0, pady=10, padx=20, sticky="ew")
+        return frame
 
-# Colors setting
-root.configure(bg="#f3f4f6")  # Couleur de fond principale
-label_bg = "#e8eaf6"         # Fond des labels
-frame_bg = "#c5cae9"         # Fond des frames
-entry_bg = "#ffffff"         # Fond des champs de saisie
-button_bg = "#7986cb"        # Fond des boutons
-button_fg = "#000000"        # Couleur du texte des boutons
-footer_bg = "#3f51b5"        # Fond de la barre des développeurs
-footer_fg = "#ffffff"        # Couleur du texte de la barre des développeurs
+    def add_entry(self, parent, label, variable, row, column):
+        ttk.Label(parent, text=label).grid(row=row, column=column, sticky="w")
+        ttk.Entry(parent, textvariable=variable).grid(row=row, column=column + 1, sticky="ew")
 
-#parameters = load_parameters_from_file()
+    def toggle_tabou_params(self, *args):
+        if self.method_choice.get() == "Genetic Algorithm + Tabou Research":
+            self.tabou_frame.grid()
+        else:
+            self.tabou_frame.grid_remove()
 
-# Fields
-instance_name_var = tk.StringVar(value=Parameters.get(INSTANCE_NAME))
-clients_number_var = tk.StringVar(value=Parameters.get(CLIENTS_NUMBER))
-nb_iterations_var = tk.StringVar(value=Parameters.get(AG_NB_ITERATIONS))
-population_size_var = tk.StringVar(value=Parameters.get(AG_POPULATION_SIZE))
-wait_coeff_var = tk.StringVar(value=Parameters.get(AG_WAIT_COEFF))
-delay_coeff_var = tk.StringVar(value=Parameters.get(AG_DELAY_COEFF))
-nb_vehicules_coeff_var = tk.StringVar(value=Parameters.get(AG_NB_VEHICULES_COEFF))
-cx_proba_var = tk.StringVar(value=Parameters.get(AG_CX_PROBA))
-mut_proba_var = tk.StringVar(value=Parameters.get(AG_MUT_PROBA))
-tabou_list_size_var = tk.StringVar(value=Parameters.get(TABOU_LIST_SIZE_MAX))
-tabou_neighbourhood_size_var = tk.StringVar(value=Parameters.get(TABOU_NEIGHBOURHOOD_SIZE))
-tabou_nb_iterations_var = tk.StringVar(value=Parameters.get(TABOU_NB_ITERATIONS))
-method_choice = tk.StringVar(value=Parameters.get(METHOD))
+    def execute_algorithm(self):
+        parameters = {
+            "INSTANCE_NAME": self.instance_name_var.get(),
+            "CLIENTS_NUMBER": int(self.clients_number_var.get()),
+            "AG_NB_ITERATIONS": int(self.nb_iterations_var.get()),
+            "AG_POPULATION_SIZE": int(self.population_size_var.get()),
+            "AG_WAIT_COEFF": float(self.wait_coeff_var.get()),
+            "AG_DELAY_COEFF": float(self.delay_coeff_var.get()),
+            "AG_NB_VEHICULES_COEFF": float(self.nb_vehicules_coeff_var.get()),
+            "AG_CX_PROBA": float(self.cx_proba_var.get()),
+            "AG_MUT_PROBA": float(self.mut_proba_var.get()),
+            "METHOD": self.method_choice.get(),
+        }
 
+        if self.method_choice.get() == "Genetic Algorithm + Tabou Research":
+            parameters.update({
+                "TABOU_LIST_SIZE_MAX": int(self.tabou_list_size_var.get()),
+                "TABOU_NEIGHBOURHOOD_SIZE": int(self.tabou_neighbourhood_size_var.get()),
+                "TABOU_NB_ITERATIONS": int(self.tabou_nb_iterations_var.get()),
+                "TABOU_SEARCH_ON": True,
+            })
+        else:
+            parameters["TABOU_SEARCH_ON"] = False
 
-method_choice.trace_add("write", toggle_tabou_params)
+        save_parameters_to_file(parameters)
+        main_optimize()
+        print("Execution is complete.")
 
-# Main frame
-frame = ttk.Frame(root, padding="10")
-frame.grid(row=0, column=0, sticky=(tk.W, tk.E))
-
-# Method choice
-ttk.Label(frame, text="Méthode à utiliser : ", background=label_bg).grid(row=0, column=0, sticky=tk.W)
-ttk.Combobox(
-    frame, textvariable=method_choice, 
-    values=["Genetic Alogorithm", "Genetic Alogorithm + Tabou Research"],
-    state="readonly"
-).grid(row=0, column=1, sticky=tk.W)
-
-# Panel for general params
-general_frame = tk.LabelFrame(frame, text="Paramètres Généraux", bg=frame_bg, fg="black", padx=10, pady=10)
-general_frame.grid(row=1, column=0, columnspan=2, pady=(10, 0), sticky=(tk.W, tk.E))
-
-def create_entry(frame, row, label, text_var):
-    tk.Label(frame, text=label, bg=label_bg).grid(row=row, column=0, sticky=tk.W)
-    tk.Entry(frame, textvariable=text_var, width=20, bg=entry_bg).grid(row=row, column=1, sticky=tk.W)
-
-create_entry(general_frame, 0, "Nom de l'Instance :", instance_name_var)
-create_entry(general_frame, 1, "Nombre de Clients :", clients_number_var)
-create_entry(general_frame, 2, "Nombre d'Itérations :", nb_iterations_var)
-create_entry(general_frame, 3, "Taille de la Population :", population_size_var)
-create_entry(general_frame, 4, "Coeff. d'Attente :", wait_coeff_var)
-create_entry(general_frame, 5, "Coeff. de Délai :", delay_coeff_var)
-create_entry(general_frame, 6, "Coeff. Véhicules :", nb_vehicules_coeff_var)
-create_entry(general_frame, 7, "Taux de Croisement :", cx_proba_var)
-create_entry(general_frame, 8, "Taux de Mutation :", mut_proba_var)
-
-# Panel for tabou research panel
-tabou_frame = tk.LabelFrame(frame, text="Paramètres Recherche Tabou", bg=frame_bg, fg="black", padx=10, pady=10)
-create_entry(tabou_frame, 0, "Taille Max Liste Tabou :", tabou_list_size_var)
-create_entry(tabou_frame, 1, "Taille Voisinage :", tabou_neighbourhood_size_var)
-create_entry(tabou_frame, 2, "Nombre d'Itérations :", tabou_nb_iterations_var)
-
-# Execution button
-tk.Button(frame, text="Exécuter", command=execute_algorithm, bg=button_bg, fg=button_fg, padx=10, pady=5).grid(row=3, column=0, columnspan=2, pady=10)
-
-# Bottom bar
-footer_frame = tk.Frame(root, pady=5, bg=footer_bg)
-footer_frame.grid(row=1, column=0, sticky=(tk.W, tk.E))
-developer_label = tk.Label(footer_frame, text="Made by : Saad SBAT, Joël KADABA, Benoit CUENOT, \nQuang Huy DANG and François DELCROIX", anchor="center", bg=footer_bg, fg=footer_fg)
-developer_label.pack(fill=tk.X)
-
-# Launching interface
-toggle_tabou_params()  # Toggling tabou research params for the first time
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AlgorithmConfigurator(root)
+    root.mainloop()

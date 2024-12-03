@@ -6,11 +6,11 @@
     "AG_WAIT_COEFF": 0.5,
     "AG_DELAY_COEFF": 9.0,
     "AG_NB_VEHICULES_COEFF": 50.0,
-    "AG_CX_PROBA": 0.85,
-    "AG_MUT_PROBA": 0.4,
-    "METHOD": "Genetic Alogorithm + Tabou Research",
-    "TABOU_SEARCH_ON": true,
-    "TABOU_LIST_SIZE_MAX": 5,
+    "AG_CX_PROBA": 0.8,
+    "AG_MUT_PROBA": 0.5,
+    "METHOD": "Genetic Algorithm + Tabou Research",
+    "TABOU_LIST_SIZE_MAX": 10,
     "TABOU_NEIGHBOURHOOD_SIZE": 200,
-    "TABOU_NB_ITERATIONS": 3000
+    "TABOU_NB_ITERATIONS": 30000,
+    "TABOU_SEARCH_ON": true
 }

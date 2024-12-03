@@ -28,7 +28,6 @@
 *.out
 *.app
 *.pyc
-images/
 
 
 .DS_Store

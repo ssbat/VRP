@@ -6,7 +6,7 @@ from Tabou import Tabou
 from CVRPTW_params import *
 from Results.ResultsManager import ResultsManager
 
-def main():
+def main_optimize():
     info = CVRPTWInfo(Parameters.get(FULL_INSTANCE_NAME),Parameters.get(CLIENTS_NUMBER))
     AG = CVRPTW(info)
     AG.optimize()
@@ -16,7 +16,7 @@ def main():
     if Parameters.get(TABOU_SEARCH_ON) and AG.population.best_solution.is_valid:
         
         print("\n*************************")
-        print("Taboo is besing executed")
+        print("Taboo is being executed")
         print("************************")
 
         TABOU = Tabou(AG.population.best_solution)
