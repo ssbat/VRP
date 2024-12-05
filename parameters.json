@@ -8,6 +8,9 @@
     "AG_NB_VEHICULES_COEFF": 50.0,
     "AG_CX_PROBA": 0.8,
     "AG_MUT_PROBA": 0.5,
-    "METHOD": "Genetic Algorithm",
-    "TABOU_SEARCH_ON": false
+    "METHOD": "Genetic Algorithm + Tabou Research",
+    "TABOU_LIST_SIZE_MAX": 10,
+    "TABOU_NEIGHBOURHOOD_SIZE": 200,
+    "TABOU_NB_ITERATIONS": 3000,
+    "TABOU_SEARCH_ON": true
 }
