@@ -109,23 +109,24 @@ class CVRPTW:
             if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:# and self.population.chromosomes[0].is_valid==True:    
                 self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
             parents=self.population.rank_selection_sorted(nb_enfant)
+
             if random.random()< Parameters.get(AG_CX_PROBA):
                 childrens = self.cx_partially_matched(parents)
             #childrens=self.croisement_OX(parents)
-            for child in childrens:
-                if random.random()< Parameters.get(AG_MUT_PROBA):
-                    child.mutation_scramble()
+                for child in childrens:
+                    if random.random()< Parameters.get(AG_MUT_PROBA):
+                        child.mutation_scramble()
             #self.mutation(childrens)
-            for children in childrens:
-                children.update()
+                for children in childrens:
+                    children.update()
 
             # To do -> replace by ranking
-            self.population.chromosomes[-nb_enfant:]= childrens
+                self.population.chromosomes[-nb_enfant:]= childrens
             if generation % 10000 == 0:
                 print(f"Generation: {generation} best fitness: {self.population.best_solution.fitness}")
             pass
         print(self.population.best_solution)
-        self.plotHistory()
+        # self.plotHistory()
         """Interface(self.population.best_solution, True)
         pygame.display.quit()
         pygame.quit()
