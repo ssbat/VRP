@@ -108,11 +108,10 @@ class CVRPTW:
             self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
             if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:# and self.population.chromosomes[0].is_valid==True:    
                 self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
-            parents=self.population.rank_selection_sorted(nb_enfant)
-
+            parents=self.population.rank_selection_sorted(nb_enfant)          
             if random.random()< Parameters.get(AG_CX_PROBA):
                 childrens = self.cx_partially_matched(parents)
-            #childrens=self.croisement_OX(parents)
+                #childrens=self.croisement_OX(parents)
                 for child in childrens:
                     if random.random()< Parameters.get(AG_MUT_PROBA):
                         child.mutation_scramble()
@@ -122,6 +121,7 @@ class CVRPTW:
 
             # To do -> replace by ranking
                 self.population.chromosomes[-nb_enfant:]= childrens
+            
             if generation % 10000 == 0:
                 print(f"Generation: {generation} best fitness: {self.population.best_solution.fitness}")
             pass
