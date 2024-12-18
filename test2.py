@@ -24,7 +24,7 @@ def run_ga(c1, c2, c3, num_runs=3):
     "INSTANCE_NAME": "R101",
     "CLIENTS_NUMBER": 25,
     "AG_NB_ITERATIONS": 10000,
-    "AG_POPULATION_SIZE": 100,
+    "AG_POPULATION_SIZE": 300,
     "AG_WAIT_COEFF": float(c1),
     "AG_DELAY_COEFF": float(c2),
     "AG_NB_VEHICULES_COEFF": float(c3),
@@ -44,7 +44,7 @@ def run_ga(c1, c2, c3, num_runs=3):
         ag = CVRPTW(info)
         ag.optimize()
         best = ag.population.best_solution
-        results.append((best.fitness, best.is_valid))
+        results.append((best.total_travel_distance, best.is_valid))
         
     return results
 
@@ -57,29 +57,29 @@ for c1, c2, c3 in itertools.product(c1_values, c2_values, c3_values):
     # Filter valid solutions
     valid_fitnesses = [r[0] for r in results if r[1]]
     if len(valid_fitnesses) > 0:
-        avg_fitness = np.mean(valid_fitnesses)
-        max_fitness = np.max(valid_fitnesses)
+        avg_distance = np.mean(valid_fitnesses)
+        max_distance = np.max(valid_fitnesses)
     else:
         # If no valid solutions, skip or mark as None
         continue
     
     # Store result
-    data.append((c1, c2, c3, avg_fitness, max_fitness))
+    data.append((c1, c2, c3, avg_distance, max_distance))
 
 # Convert to numpy array for easier manipulation
 data = np.array(data, dtype=[('c1', float), ('c2', float), ('c3', float), 
-                             ('avg_fitness', float), ('max_fitness', float)])
+                             ('avg_distance', float), ('max_distance', float)])
 
 # Example: Visualize the average fitness in 3D
 # You could also pick a slice and visualize in 2D.
 fig = plt.figure(figsize=(10, 8))
 ax = fig.add_subplot(111, projection='3d')
 
-# Choose what you want to plot. Here, let's plot avg_fitness.
+# Choose what you want to plot. Here, let's plot avg_distance.
 x = data['c1']
 y = data['c2']
 z = data['c3']
-c = data['avg_fitness']
+c = data['avg_distance']
 
 # Create a scatter plot in 3D
 p = ax.scatter(x, y, z, c=c, cmap='viridis', s=50)
@@ -87,7 +87,7 @@ ax.set_xlabel('C1')
 ax.set_ylabel('C2')
 ax.set_zlabel('C3')
 ax.set_title('Fitness by coefficient combinations (only valid solutions)')
-fig.colorbar(p, ax=ax, label='Average Fitness')
+fig.colorbar(p, ax=ax, label='Average Distance')
 
 plt.tight_layout()
 plt.show()
@@ -104,7 +104,7 @@ if len(subdata) > 0:
     fitness_grid = np.zeros((len(c1_uniq), len(c2_uniq)))
     for i, cc1 in enumerate(c1_uniq):
         for j, cc2 in enumerate(c2_uniq):
-            val = subdata[(subdata['c1'] == cc1) & (subdata['c2'] == cc2)]['avg_fitness']
+            val = subdata[(subdata['c1'] == cc1) & (subdata['c2'] == cc2)]['avg_distance']
             if len(val) > 0:
                 fitness_grid[i, j] = val[0]
             else:
@@ -117,5 +117,5 @@ if len(subdata) > 0:
     plt.xlabel('C1')
     plt.ylabel('C2')
     plt.title(f'Average Fitness Heatmap at C3={fixed_c3}')
-    plt.colorbar(label='Average Fitness')
+    plt.colorbar(label='Average Distance')
     plt.show()
