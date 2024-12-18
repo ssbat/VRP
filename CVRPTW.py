@@ -101,36 +101,47 @@ class CVRPTW:
 
 
     def optimize(self):
-        nb_enfant= 2
-        self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
-        for generation in range(Parameters.get(AG_NB_ITERATIONS)) :
-            self.population.sort()
-            self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
-            if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:# and self.population.chromosomes[0].is_valid==True:    
-                self.population.best_solution=copy.deepcopy(self.population.chromosomes[0])
-            parents=self.population.rank_selection_sorted(nb_enfant)
-            if random.random()< Parameters.get(AG_CX_PROBA):
-                childrens = self.cx_partially_matched(parents)
-            #childrens=self.croisement_OX(parents)
-            for child in childrens:
-                if random.random()< Parameters.get(AG_MUT_PROBA):
-                    child.mutation_scramble()
-            #self.mutation(childrens)
-            for children in childrens:
-                children.update()
+        nb_offspring = 2  # Number of offspring to produce per generation
+        self.population.best_solution = copy.deepcopy(self.population.chromosomes[0])
 
-            # To do -> replace by ranking
-            self.population.chromosomes[-nb_enfant:]= childrens
+        for generation in range(Parameters.get(AG_NB_ITERATIONS)):
+            self.population.sort()
+            # Track the best solution
+            self.population.fitness_history[generation] = self.population.chromosomes[0].fitness
+            if self.population.chromosomes[0].fitness < self.population.best_solution.fitness:
+                self.population.best_solution = copy.deepcopy(self.population.chromosomes[0])
+
+            # Selection
+            parents = self.population.rank_selection_sorted(nb_offspring)
+
+            # Crossover
+            offspring = []
+            if random.random() < Parameters.get(AG_CX_PROBA):
+                offspring = self.cx_partially_matched(parents)
+            else:
+                # If no crossover, clone the parents as offspring
+                offspring = [copy.deepcopy(parent) for parent in parents]
+
+            # Mutation
+            for child in offspring:
+                if random.random() < Parameters.get(AG_MUT_PROBA):
+                    child.mutation_scramble()
+
+            # recalculate fitness, etc.
+            for child in offspring:
+                child.update()
+
+            # Replace the least-fit individuals
+            self.population.chromosomes[-nb_offspring:] = offspring
+
+            # Logging progress
             if generation % 10000 == 0:
-                print(f"Generation: {generation} best fitness: {self.population.best_solution.fitness}")
-            pass
-        print(self.population.best_solution)
-        self.plotHistory()
-        """Interface(self.population.best_solution, True)
-        pygame.display.quit()
-        pygame.quit()
-        quit()"""
-        pass
+                print(f"Generation: {generation}, Best Fitness: {self.population.best_solution.fitness}")
+
+        print("Best solution:", self.population.best_solution)
+        # self.plotHistory()
+
+
 
     def plotHistory(self):
         x_values = list(self.population.fitness_history.keys())

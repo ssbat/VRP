@@ -1,3 +1,4 @@
+import copy
 import random
 from CVRPTW_chromosome import Chromosome
 from CVRPTW_info import CVRPTWInfo
@@ -47,7 +48,7 @@ class Population:
                         break
         return selected_chromomes
     
-    def rank_selection_sorted(self,num):
+    def rank_selection_sorted(self, num):
         """ Rank selection for a pre-sorted population.
             Individuals are selected based on their rank in the sorted population.
         """
@@ -60,15 +61,16 @@ class Population:
         selection_probs = [(len(self.chromosomes) - rank + 1) / total_ranks for rank in ranks]
 
         # Generate cumulative probabilities
-        cumulative_probs = [sum(selection_probs[:i+1]) for i in range(len(selection_probs))]
+        cumulative_probs = [sum(selection_probs[:i + 1]) for i in range(len(selection_probs))]
 
-        selected_chromomes=[]
+        selected_chromosomes = []
         for n in range(num):
-            r = random.random()  
+            r = random.random()
             for i, individual in enumerate(self.chromosomes):
                 if r <= cumulative_probs[i]:
-                    selected_chromomes.append(individual)  # Append the individual
+                    # Append a deep copy of the individual to avoid modifying the original
+                    selected_chromosomes.append(copy.deepcopy(individual))
                     break
 
-        return selected_chromomes
+        return selected_chromosomes
         
