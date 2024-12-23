@@ -16,6 +16,7 @@ class AlgorithmConfigurator:
         self.root = root
         self.root.title("Configuration des Paramètres des Algorithmes")
         self.root.geometry("1000x700")
+        self.root.resizable(False, False)
         self.create_styles()
         self.create_variables()
         self.create_widgets()
@@ -92,9 +93,9 @@ class AlgorithmConfigurator:
         self.add_entry(self.tabou_frame, "Taille Voisinage :", self.tabou_neighbourhood_size_var, 1, 0)
         self.add_entry(self.tabou_frame, "Nombre d'Itérations :", self.tabou_nb_iterations_var, 2, 0)
 
-        # "Go to Frame 2" Button
+        # "Go to Chromosom detail" Button
         ttk.Button(
-            config_frame, text="Go to Frame 2", command=self.show_second_frame
+            config_frame, text="Détail Chromosome", command=self.show_second_frame
         ).grid(row=4, column=0, pady=20, padx=10, sticky="w")
     
         # Execute Button
