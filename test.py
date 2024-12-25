@@ -8,7 +8,7 @@ parameters = {
     "AG_POPULATION_SIZE": 300,
     "AG_WAIT_COEFF": 0.5,
     "AG_DELAY_COEFF": 9,
-    "AG_NB_VEHICULES_COEFF": 50.0,
+    "AG_NB_VEHICULES_COEFF": 300.0,
     "AG_CX_PROBA": 0.8,
     "AG_MUT_PROBA": 0.5,
     "METHOD": "Genetic Algorithm + Tabou Research",
