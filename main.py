@@ -23,7 +23,7 @@ def show_error_popup(root, message):
     close_button = ttk.Button(error_popup, text="Fermer", command=error_popup.destroy)
     close_button.pack(pady=10)
 
-def main_optimize(root):
+def main_optimize(root=None):
     info = CVRPTWInfo(Parameters.get(FULL_INSTANCE_NAME),Parameters.get(CLIENTS_NUMBER))
     AG = CVRPTW(info)
     AG.optimize()
@@ -31,7 +31,7 @@ def main_optimize(root):
     tabou_best_chromosome = None
     
     # Vérification de la validité de la meilleure solution
-    if not AG.population.best_solution.is_valid:
+    if root!=None and not AG.population.best_solution.is_valid:
         # Afficher une pop-up d'erreur si la solution n'est pas valide
         show_error_popup(root, "La meilleure solution trouvée n'est pas valide, réessayez avec d'autres paramètres !")
 

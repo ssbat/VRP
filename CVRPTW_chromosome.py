@@ -50,7 +50,11 @@ class Chromosome(object):
 
         
     # To Change
-    def calculFitness(self, w1=Parameters.get(AG_WAIT_COEFF), w2=Parameters.get(AG_DELAY_COEFF),w3=Parameters.get(AG_NB_VEHICULES_COEFF)):
+    def calculFitness(self, w1=None, w2=None,w3=None):
+        if w1==None or w2==None or w3==None:
+            w1=Parameters.get(AG_WAIT_COEFF)
+            w2=Parameters.get(AG_DELAY_COEFF)
+            w3=Parameters.get(AG_NB_VEHICULES_COEFF)
         self.initialize_fitness_variables()
         self.fitnessRoute = []
         for route in self.routes:
