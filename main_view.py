@@ -155,6 +155,7 @@ class AlgorithmConfigurator:
             parameters["TABOU_SEARCH_ON"] = False
 
         save_parameters_to_file(parameters)
+        print(parameters)
         main_optimize()
         print("Execution is complete.")
 
