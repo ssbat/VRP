@@ -18,8 +18,9 @@ class Parameters:
 
     @staticmethod
     def reload_if_modified(file_path=PARAMETERS_PATH):
-        with open(file_path, "r") as file:
-                Parameters._data = json.load(file)
+        if Parameters._is_file_modified(file_path):
+            with open(file_path, "r") as file:
+                    Parameters._data = json.load(file)
 
     @staticmethod
     def get(key, default_value=None):

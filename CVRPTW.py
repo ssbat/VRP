@@ -111,7 +111,7 @@ class CVRPTW:
             # Crossover
             offspring = []
             if random.random() < Parameters.get(AG_CX_PROBA):
-                offspring = self.cx_partially_matched(parents)
+                offspring = self.croisement_OX(parents)
             else:
                 # If no crossover, clone the parents as offspring
                 offspring = [copy.deepcopy(parent) for parent in parents]
