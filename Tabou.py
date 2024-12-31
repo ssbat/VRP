@@ -77,7 +77,7 @@ class Tabou:
 
             self.neighbourhood.clear()
 
-        self.plotHistory()
+        # self.plotHistory()
         self.best_chromosome = min(self.chromosomes_history.values(), key=lambda chromo: chromo.total_travel_distance)
         print("Meilleure solution (distance la plus petite) :", self.best_chromosome)
 
