@@ -94,14 +94,17 @@ class AlgorithmConfigurator:
         self.add_entry(self.tabou_frame, "Nombre d'Itérations :", self.tabou_nb_iterations_var, 2, 0)
 
         # "Go to Chromosom detail" Button
-        ttk.Button(
-            config_frame, text="Détail Chromosome", command=self.show_second_frame
-        ).grid(row=4, column=0, pady=20, padx=10, sticky="w")
+        detail_button = ttk.Button(
+            root, text="Détail Chromosome", command=self.show_second_frame
+        )
+        detail_button.place(x=20, y=670, width=200, height=40)  # Adjust x, y, width, height as needed
 
         # Execute Button
-        ttk.Button(
-            config_frame, text="Exécuter", command=self.execute_algorithm
-        ).grid(row=4, column=0, pady=20, padx=10, sticky="e")
+        execute_button = ttk.Button(
+            root, text="Exécuter", command=self.execute_algorithm
+        )
+        execute_button.place(x=250, y=670, width=200, height=40)  # Adjust x, y, width, height as needed
+
         self.toggle_tabou_params()
 
         # Image Frame
