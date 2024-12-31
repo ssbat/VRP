@@ -14,7 +14,7 @@ class AlgorithmConfigurator:
     def __init__(self, root):
         self.root = root
         self.root.title("Configuration des Paramètres des Algorithmes")
-        self.root.geometry("1000x700")
+        self.root.geometry("1000x900")
         self.root.resizable(False, False)
         self.create_styles()
         self.create_variables()
