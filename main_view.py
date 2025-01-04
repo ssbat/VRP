@@ -153,8 +153,8 @@ class AlgorithmConfigurator:
     def write(self, text):
         self.log_to_console(text)
 
-    # def flush(self):
-    #     pass  # Required for overriding stdout
+    def flush(self):
+        pass  
 
     def restore_stdout(self):
         if self.original_stdout:

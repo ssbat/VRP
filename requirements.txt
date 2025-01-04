@@ -1,0 +1,5 @@
+matplotlib==3.10.0
+numpy==2.2.1
+Pillow==11.1.0
+pygame==2.6.0
+pygame_widgets==1.1.5

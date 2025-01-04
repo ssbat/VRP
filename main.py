@@ -47,3 +47,7 @@ def main_optimize(root=None):
 
     RESULTS_MANAGER = ResultsManager(AG.population.best_solution, tabou_best_chromosome, CSV_PATH)
     RESULTS_MANAGER.save_results_to_csv() 
+
+
+if __name__ == "__main__":
+    print("Please run main_view.py")
