@@ -55,7 +55,6 @@ def main_optimize(root=None):
         Interface(AG.population.best_solution)
     pygame.display.quit()
     pygame.quit()
-    quit()
 
 
 if __name__ == "__main__":
