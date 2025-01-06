@@ -1,6 +1,6 @@
 {
-    "INSTANCE_NAME": "C103",
-    "CLIENTS_NUMBER": 100,
+    "INSTANCE_NAME": "R101",
+    "CLIENTS_NUMBER": 25,
     "AG_NB_ITERATIONS": 50000,
     "AG_POPULATION_SIZE": 300,
     "AG_WAIT_COEFF": 0.2,
@@ -8,9 +8,6 @@
     "AG_NB_VEHICULES_COEFF": 0.0,
     "AG_CX_PROBA": 0.8,
     "AG_MUT_PROBA": 0.8,
-    "METHOD": "Genetic Algorithm + Tabou Research",
-    "TABOU_LIST_SIZE_MAX": 10,
-    "TABOU_NEIGHBOURHOOD_SIZE": 200,
-    "TABOU_NB_ITERATIONS": 6000,
-    "TABOU_SEARCH_ON": true
+    "METHOD": "Genetic Algorithm",
+    "TABOU_SEARCH_ON": false
 }

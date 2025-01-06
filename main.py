@@ -1,7 +1,9 @@
 
+import pygame
 from CVRPTW import CVRPTW
 from CVRPTW_info import CVRPTWInfo
 from Parameters import Parameters
+from Simulation import Interface
 from Tabou import Tabou
 from CVRPTW_params import *
 from Results.ResultsManager import ResultsManager
@@ -47,6 +49,13 @@ def main_optimize(root=None):
 
     RESULTS_MANAGER = ResultsManager(AG.population.best_solution, tabou_best_chromosome, CSV_PATH)
     RESULTS_MANAGER.save_results_to_csv() 
+    if tabou_best_chromosome:
+        Interface(tabou_best_chromosome)
+    else:
+        Interface(AG.population.best_solution)
+    pygame.display.quit()
+    pygame.quit()
+    quit()
 
 
 if __name__ == "__main__":
